@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Springfield College</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+/* --- Global Styles --- */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    background: #f8f9fa;
+    color: #202124;
+}
+
+/* --- Navbar --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a73e8;
+    color: white;
+    padding: 12px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.navbar .logo {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    margin-left: 16px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+/* --- Hero Section --- */
+.hero {
+    text-align: center;
+    padding: 120px 20px 60px;
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: #1a73e8;
+}
+
+.hero p {
+    font-size: 18px;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    color: #3c4043;
+}
+
+/* Feedback Button */
+.feedback-btn {
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.feedback-btn:hover {
+    background-color: #1669c1;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* --- Info Sections --- */
+section {
+    padding: 60px 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+section h2 {
+    font-size: 28px;
+    margin-bottom: 24px;
+    color: #1a73e8;
+}
+
+section p, section ul {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #3c4043;
+}
+
+section ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+/* --- Footer --- */
+footer {
+    background: #1a73e8;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+/* --- Modal --- */
+.modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(60,64,67,0.3);
+    backdrop-filter: blur(2px);
+    z-index: 999;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 95%;
+    max-width: 480px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    z-index: 1000;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    font-size: 20px;
+    font-weight: 500;
+    color: #1a73e8;
+}
+
+.close-modal {
+    font-size: 24px;
+    cursor: pointer;
+    color: #5f6368;
+    transition: 0.2s;
+}
+
+.close-modal:hover {
+    color: #1a73e8;
+}
+
+.modal form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal input, .modal textarea {
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.modal input:focus, .modal textarea:focus {
+    border-color: #1a73e8;
+    box-shadow: 0 1px 4px rgba(26,115,232,0.3);
+    outline: none;
+}
+
+.modal textarea {
+    resize: none;
+    min-height: 100px;
+}
+
+.char-count {
+    text-align: right;
+    font-size: 12px;
+    color: #5f6368;
+    margin-bottom: 10px;
+}
+
+.modal button {
+    padding: 12px 16px;
+    background-color: #1a73e8;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.modal button:hover {
+    background-color: #1669c1;
+}
+
+.thank-you {
+    text-align: center;
+    font-size: 18px;
+    color: #1a73e8;
+    padding: 20px 0;
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <div class="logo">Springfield College</div>
+    <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#departments">Departments</a>
+        <a href="#contact">Contact</a>
+    </div>
+</div>
+
+<!-- Hero Section -->
+<div class="hero">
+    <h1>Welcome to Springfield College</h1>
+    <p>Empowering students to achieve excellence in education, research, and innovation.</p>
+    <button class="feedback-btn">Give Feedback</button>
+</div>
+
+<!-- About Section -->
+<section id="about">
+    <h2>About Us</h2>
+    <p>Springfield College has been shaping young minds for over 75 years. Our mission is to provide a holistic educational experience that combines academic excellence with personal growth. We are committed to fostering innovation, critical thinking, and social responsibility in every student.</p>
+    <p>Our campus spans over 50 acres of lush greenery, equipped with state-of-the-art laboratories, libraries, and recreational facilities. We emphasize interdisciplinary learning, ensuring students gain both theoretical knowledge and practical skills for real-world challenges.</p>
+</section>
+
+<!-- Departments Section -->
+<section id="departments">
+    <h2>Departments</h2>
+    <p>Springfield College offers a diverse range of programs across multiple disciplines:</p>
+    <ul>
+        <li><strong>Science:</strong> Physics, Chemistry, Biology, Environmental Science.</li>
+        <li><strong>Engineering:</strong> Computer Science, Electrical, Mechanical, Civil Engineering.</li>
+        <li><strong>Arts:</strong> Literature, Fine Arts, Music, Theatre.</li>
+        <li><strong>Business:</strong> Management, Finance, Marketing, Entrepreneurship.</li>
+        <li><strong>Humanities & Social Sciences:</strong> Psychology, Sociology, Political Science.</li>
+    </ul>
+    <p>Each department is staffed with experienced faculty and provides modern facilities, research opportunities, and mentorship programs to help students excel in their chosen fields.</p>
+</section>
+
+<!-- Contact Section -->
+<section id="contact">
+    <h2>Contact Us</h2>
+    <p>If you have any questions, suggestions, or just want to get in touch with us, feel free to reach out. Our administrative team is always happy to assist students, parents, and alumni.</p>
+    <ul>
+        <li><strong>Email:</strong> info@springfieldcollege.edu</li>
+        <li><strong>Phone:</strong> (123) 456-7890</li>
+        <li><strong>Address:</strong> 123 College Lane, Springfield, USA</li>
+        <li><strong>Office Hours:</strong> Monday - Friday, 9:00 AM - 5:00 PM</li>
+    </ul>
+    <p>Follow us on social media for updates, events, and campus news:</p>
+    <p>
+        <a href="#" target="_blank">Facebook</a> | 
+        <a href="#" target="_blank">Twitter</a> | 
+        <a href="#" target="_blank">Instagram</a> | 
+        <a href="#" target="_blank">LinkedIn</a>
+    </p>
+</section>
+
+<!-- Footer -->
+<footer>
+    &copy; 2025 Springfield College. All rights reserved.
+</footer>
+
+<!-- Feedback Modal -->
+<div class="modal-backdrop"></div>
+<div class="modal">
+    <div class="modal-header">
+        <h2>College Feedback</h2>
+        <span class="close-modal">&times;</span>
+    </div>
+    <form id="feedbackForm">
+        <input type="text" id="name" placeholder="Your Name" required>
+        <textarea id="comments" placeholder="Your Comments" maxlength="250" required></textarea>
+        <div class="char-count"><span id="charNum">0</span>/250</div>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<script>
+$(document).ready(function(){
+    // Open modal
+    $('.feedback-btn').click(function(){
+        $('.modal-backdrop, .modal').fadeIn(200);
+    });
+
+    // Close modal
+    $('.close-modal, .modal-backdrop').click(function(e){
+        if(e.target !== this) return;
+        $('.modal-backdrop, .modal').fadeOut(200);
+        $('.modal form').show();
+        $('.thank-you').remove();
+    });
+
+    // Character counter
+    $('#comments').on('input', function(){
+        $('#charNum').text($(this).val().length);
+    });
+
+    // Submit form
+    $('#feedbackForm').submit(function(e){
+        e.preventDefault();
+        $(this).fadeOut(200, function(){
+            $('.modal').append('<div class="thank-you">Thank you for your feedback! 🎉</div>');
+        });
+    });
+});
+</script>
+
+</body>
+</html>
+

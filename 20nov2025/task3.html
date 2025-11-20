@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 Student To-Do Magic</title>
+
+    <!-- jQuery and jQuery UI -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/smoothness/jquery-ui.css">
+
+    <style>
+        /* Base styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+            display: flex;
+            justify-content: center;
+            padding: 50px 0;
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 450px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 2rem;
+            color: #6a0dad;
+        }
+
+        p {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        #taskInput {
+            flex: 2;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        #taskInput:focus {
+            border-color: #6a0dad;
+            box-shadow: 0 0 8px rgba(106,13,173,0.3);
+        }
+
+        #priority, #dueDate {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+
+        #addTaskBtn {
+            padding: 10px 15px;
+            background-color: #6a0dad;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        #addTaskBtn:hover {
+            background-color: #520085;
+            transform: scale(1.05);
+        }
+
+        ul#taskList {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background: #f3f3f3;
+            transition: all 0.3s;
+            cursor: grab;
+        }
+
+        li.high {
+            border-left: 6px solid #ff4d4d;
+        }
+
+        li.normal {
+            border-left: 6px solid #4da6ff;
+        }
+
+        li.low {
+            border-left: 6px solid #b3b3b3;
+        }
+
+        li.completed {
+            text-decoration: line-through;
+            color: gray;
+            background: #d9ffd9;
+            transform: scale(0.98);
+        }
+
+        span.remove {
+            color: red;
+            cursor: pointer;
+            margin-left: 10px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        span.remove:hover {
+            color: darkred;
+        }
+
+        .footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+        }
+
+        /* Smooth drag animation */
+        .ui-sortable-placeholder {
+            height: 50px;
+            background: #ffe0e0;
+            border: 2px dashed #ff4d4d;
+            margin-bottom: 10px;
+            visibility: visible !important;
+        }
+
+        li.ui-sortable-helper {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 My Student To-Do List</h1>
+        <p>Track, prioritize, and conquer your tasks like a pro!</p>
+
+        <div class="input-container">
+            <input type="text" id="taskInput" placeholder="What do you want to do today?">
+            <select id="priority">
+                <option value="normal">Normal</option>
+                <option value="high">🔥 High</option>
+                <option value="low">💤 Low</option>
+            </select>
+            <input type="date" id="dueDate">
+            <button id="addTaskBtn">Add Task</button>
+        </div>
+
+        <ul id="taskList"></ul>
+
+        <div class="footer">
+            <span id="totalTasks">Total Tasks: 0</span>
+            <span id="completedTasks">Completed: 0</span>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            function updateCounters() {
+                const total = $('#taskList li').length;
+                const completed = $('#taskList li.completed').length;
+                $('#totalTasks').text('Total Tasks: ' + total);
+                $('#completedTasks').text('Completed: ' + completed);
+            }
+
+            // Add task
+            $('#addTaskBtn').on('click', function() {
+                let taskText = $('#taskInput').val().trim();
+                let priority = $('#priority').val();
+                let dueDate = $('#dueDate').val();
+
+                if (!taskText) {
+                    alert("⚠️ Please enter a task!");
+                    return;
+                }
+
+                let dueDisplay = dueDate ? ` | Due: ${dueDate}` : '';
+                let taskHTML = `<li class="${priority}">${taskText}${dueDisplay} <span class="remove">❌</span></li>`;
+
+                $('#taskList').append(taskHTML);
+                $('#taskInput').val('');
+                $('#dueDate').val('');
+                updateCounters();
+
+                $('#taskList li:last').hide().fadeIn(500);
+            });
+
+            // Remove task
+            $('#taskList').on('click', '.remove', function(e) {
+                e.stopPropagation();
+                $(this).parent().fadeOut(300, function() {
+                    $(this).remove();
+                    updateCounters();
+                });
+            });
+
+            // Complete task toggle
+            $('#taskList').on('click', 'li', function(e) {
+                if (!$(e.target).hasClass('remove')) {
+                    $(this).toggleClass('completed');
+                    updateCounters();
+                }
+            });
+
+            // Make tasks sortable (drag and drop)
+            $('#taskList').sortable({
+                placeholder: "ui-sortable-placeholder",
+                revert: 150,
+                cursor: "grabbing"
+            });
+        });
+    </script>
+</body>
+</html>

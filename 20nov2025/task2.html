@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Product Grid</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Basic Reset */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Roboto',sans-serif;background:#f5f5f5;color:#333;}
+a{text-decoration:none;color:inherit;}
+ul{list-style:none;}
+
+/* Navigation Bar */
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#fff;
+  padding:15px 30px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.1);
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+.navbar .logo{font-size:1.5rem;font-weight:700;color:#1976D2;}
+.navbar ul{display:flex;gap:25px;}
+.navbar ul li{cursor:pointer;transition:0.3s;}
+.navbar ul li:hover{color:#0D47A1;}
+.navbar .search-bar input{
+  padding:6px 12px;
+  border-radius:20px;
+  border:1px solid #ccc;
+  outline:none;
+  transition:0.3s;
+}
+.navbar .search-bar input:focus{border-color:#1976D2;}
+
+/* Container */
+.container{max-width:1200px;margin:40px auto;padding:0 20px;}
+
+/* Product Grid */
+.product-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:30px;
+}
+.product-card{
+  background:#fff;
+  border-radius:12px;
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 2px 6px rgba(0,0,0,0.12);
+  transition:transform 0.3s,box-shadow 0.3s;
+  cursor:pointer;
+}
+.product-card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 12px 24px rgba(0,0,0,0.18);
+}
+.product-card img{
+  width:100%;
+  height:250px;
+  object-fit:cover;
+  display:block;
+  transition:transform 0.4s ease;
+  border-bottom:1px solid #eee;
+}
+.product-card:hover img{transform:scale(1.05);}
+
+/* Product Info */
+.product-info{
+  padding:18px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.product-info h2{font-size:1.3rem;font-weight:500;color:#212121;}
+.price{color:#0F9D58;font-weight:700;font-size:1.1rem;}
+.description{
+  display:none;
+  font-size:0.95rem;
+  line-height:1.5;
+  color:#616161;
+  margin-top:10px;
+  border-top:1px solid #eee;
+  padding-top:10px;
+}
+
+/* Toggle Panel */
+.toggle-panel{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  cursor:pointer;
+  color:#1976D2;
+  font-weight:500;
+  margin-top:10px;
+  user-select:none;
+  transition:color 0.3s;
+}
+.toggle-panel:hover{color:#0D47A1;}
+.toggle-panel svg{
+  width:16px;height:16px;fill:currentColor;
+  margin-left:6px;
+  transition:transform 0.3s;
+}
+.toggle-panel.active svg{transform:rotate(180deg);}
+
+/* Icons row */
+.icon-row{display:flex;gap:10px;margin-top:10px;}
+.icon-btn{
+  cursor:pointer;
+  font-size:1.2rem;
+  padding:6px;
+  border-radius:50%;
+  transition:0.3s;
+}
+.icon-btn:hover{
+  background:#1976D2;
+  color:#fff;
+  transform:scale(1.2);
+}
+
+/* Toast Notification */
+.toast{
+  position:fixed;
+  bottom:30px;
+  right:30px;
+  background:#1976D2;
+  color:#fff;
+  padding:12px 20px;
+  border-radius:8px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2);
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 0.4s, transform 0.4s;
+  z-index:10000;
+}
+
+/* Responsive */
+@media(max-width:768px){
+  .navbar{flex-direction:column;align-items:flex-start;gap:10px;}
+  h1{font-size:2rem;}
+  .product-info h2{font-size:1.1rem;}
+  .price{font-size:1rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="logo">MyStore</div>
+  <div class="search-bar"><input type="text" placeholder="Search products..."></div>
+  <ul>
+    <li>Home</li>
+    <li>Men</li>
+    <li>Women</li>
+    <li>Kids</li>
+    <li>Sale</li>
+  </ul>
+</nav>
+
+<!-- Main Container -->
+<div class="container">
+  <h1>Premium Products</h1>
+  <div class="product-grid">
+
+    <!-- Product 1 -->
+    <div class="product-card">
+      <img src="https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTZDFDggGKt0vT274Tg3NodQP8tF-0maNlSzgDTZP4kw_3PFQ6dVcJUlLaEDyDLKlnz_UaGX1xLdT1iQ0SMK217ceCSujJKFHaJCGOO_OyUwU9LAKt4huSO" alt="Product 1">
+      <div class="product-info">
+        <h2>Casual Shirt</h2>
+        <div class="price">$29.99</div>
+        <div class="icon-row">
+          <div class="icon-btn wishlist">❤️</div>
+          <div class="icon-btn cart">🛒</div>
+        </div>
+        <p class="description">Soft, breathable casual shirt suitable for office and outings. Premium cotton fabric for all-day comfort.</p>
+        <div class="toggle-panel">View More
+          <svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 2 -->
+    <div class="product-card">
+      <img src="https://m.media-amazon.com/images/I/71SFapk8JqL._AC_UY1000_.jpg" alt="Product 2">
+      <div class="product-info">
+        <h2>Sport Sneakers</h2>
+        <div class="price">$49.99</div>
+        <div class="icon-row">
+          <div class="icon-btn wishlist">❤️</div>
+          <div class="icon-btn cart">🛒</div>
+        </div>
+        <p class="description">Lightweight and comfortable sneakers for casual and athletic use. Breathable material keeps your feet fresh.</p>
+        <div class="toggle-panel">View More
+          <svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 3 -->
+    <div class="product-card">
+      <img src="https://assets.myntassets.com/w_412,q_30,dpr_3,fl_progressive,f_webp/assets/images/30659784/2024/12/3/6980bb36-31fb-431d-990a-289d15b5e9701733229891366-Roadster-Men-Jackets-6151733229890711-1.jpg" alt="Product 3">
+      <div class="product-info">
+        <h2>Denim Jacket</h2>
+        <div class="price">$69.99</div>
+        <div class="icon-row">
+          <div class="icon-btn wishlist">❤️</div>
+          <div class="icon-btn cart">🛒</div>
+        </div>
+        <p class="description">Classic denim jacket with premium finish, perfect for layering. Durable and stylish.</p>
+        <div class="toggle-panel">View More
+          <svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast">Added to cart!</div>
+
+<script>
+$(document).ready(function(){
+
+  // Toggle panel
+  $('.toggle-panel').click(function(e){
+    e.stopPropagation();
+    let panel = $(this);
+    let desc = panel.siblings('.description');
+
+    $('.description').not(desc).slideUp();
+    $('.toggle-panel').not(panel).removeClass('active').text('View More').append('<svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>');
+
+    desc.slideToggle(300);
+    if(desc.is(':visible')){
+      panel.addClass('active').text('Hide').append('<svg viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>');
+    } else {
+      panel.removeClass('active').text('View More').append('<svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>');
+    }
+  });
+
+  $(document).click(function(){
+    $('.description').slideUp();
+    $('.toggle-panel').removeClass('active').text('View More').append('<svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>');
+  });
+
+  $('.product-card').click(function(e){ e.stopPropagation(); });
+
+  // Wishlist toggle
+  $('.wishlist').click(function(e){
+    e.stopPropagation();
+    $(this).toggleClass('active');
+    if($(this).hasClass('active')) $(this).css('color','#FF5252');
+    else $(this).css('color','#000');
+  });
+
+  // Cart click with toast
+  $('.cart').click(function(e){
+    e.stopPropagation();
+    let toast = $('.toast');
+    toast.text('Added to cart!').css({'opacity':1,'transform':'translateY(0)'});
+    setTimeout(()=>{toast.css({'opacity':0,'transform':'translateY(20px)'});},2000);
+  });
+
+});
+</script>
+
+</body>
+</html>
+
+
+
+
