@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Job Portal - Job Seeker Registration</title>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Google Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+body { font-family:'Roboto', sans-serif; margin:0; background:#f5f6fa; color:#333; }
+header, footer { text-align:center; padding:15px 0; background:#1a73e8; color:white; font-weight:500; }
+.container { max-width: 800px; margin: 30px auto; background:#fff; padding:30px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.1); }
+h2 { text-align:center; color:#1a73e8; margin-bottom:20px; }
+
+.form-group { margin-bottom:20px; position:relative; }
+label { display:block; font-weight:500; margin-bottom:6px; }
+input, select, textarea { width:100%; padding:10px 12px; border:2px solid #dcd6ff; border-radius:6px; font-size:15px; transition: all 0.3s; }
+input:focus, select:focus, textarea:focus { border-color:#1a73e8; box-shadow:0 0 5px rgba(26,115,232,0.3); outline:none; }
+input.invalid, select.invalid, textarea.invalid { border-color:red; }
+button { background:#1a73e8; color:white; border:none; padding:12px 25px; border-radius:6px; font-weight:600; cursor:pointer; transition:0.3s; }
+button:hover { background:#155ab6; }
+
+/* Skills highlight */
+#skills { padding:10px; border:2px solid #dcd6ff; border-radius:6px; transition:0.3s; }
+#skills.highlight { border-color:#1a73e8; background:#e8f0fe; }
+
+/* Relocate cities */
+#relocateCities { display:none; }
+
+/* GitHub preview */
+#githubPreview { margin-top:6px; font-size:14px; color:#555; }
+
+/* File preview */
+#resumePreview { margin-top:6px; font-size:14px; color:#555; }
+
+/* Confirmation */
+#confirmation { display:none; text-align:center; font-size:18px; color:green; margin-top:20px; }
+
+/* Responsive */
+@media(max-width:768px){ .container { margin:20px; padding:20px; } }
+</style>
+</head>
+<body>
+
+<header>
+<h1>Tech Job Portal</h1>
+</header>
+
+<div class="container">
+    <h2>Job Seeker Registration Form</h2>
+    <form id="jobForm" enctype="multipart/form-data">
+        <!-- Full Name -->
+        <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="fullName" required placeholder="Alphabets only">
+            <small class="error"></small>
+        </div>
+
+        <!-- Date of Birth -->
+        <div class="form-group">
+            <label>Date of Birth *</label>
+            <input type="date" id="dob" required>
+            <small class="error"></small>
+        </div>
+
+        <!-- Gender -->
+        <div class="form-group">
+            <label>Gender *</label>
+            <select id="gender" required>
+                <option value="">Select Gender</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+                <option>Prefer not to say</option>
+            </select>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+            <label>Email *</label>
+            <input type="email" id="email" required placeholder="example@mail.com">
+            <small class="error"></small>
+        </div>
+
+        <!-- Mobile -->
+        <div class="form-group">
+            <label>Mobile Number *</label>
+            <input type="text" id="mobile" placeholder="10 digits, start with 6-9" required>
+            <small class="error"></small>
+        </div>
+
+        <!-- Qualification -->
+        <div class="form-group">
+            <label>Highest Qualification *</label>
+            <select id="qualification" required>
+                <option value="">Select</option>
+                <option>Bachelor's</option>
+                <option>Master's</option>
+                <option>PhD</option>
+                <option>Diploma</option>
+            </select>
+        </div>
+
+        <!-- Experience -->
+        <div class="form-group">
+            <label>Years of Experience *</label>
+            <input type="number" id="experience" min="0" max="99" required placeholder="0-99">
+        </div>
+
+        <!-- Skills -->
+        <div class="form-group" id="skills">
+            <label>Skills *</label>
+            <input type="checkbox" name="skills" value="JavaScript"> JavaScript
+            <input type="checkbox" name="skills" value="Python"> Python
+            <input type="checkbox" name="skills" value="Java"> Java
+            <input type="checkbox" name="skills" value="C++"> C++
+            <input type="checkbox" name="skills" value="React"> React
+        </div>
+
+        <!-- Resume -->
+        <div class="form-group">
+            <label>Resume Upload (PDF, max 5MB) *</label>
+            <input type="file" id="resume" accept=".pdf" required>
+            <div id="resumePreview"></div>
+        </div>
+
+        <!-- Preferred Job Location -->
+        <div class="form-group">
+            <label>Preferred Job Location *</label>
+            <input type="text" id="location" required placeholder="Alphabets only">
+        </div>
+
+        <!-- Join Date -->
+        <div class="form-group">
+            <label>Available to Join From *</label>
+            <input type="date" id="joinDate" required>
+        </div>
+
+        <!-- Expected Salary -->
+        <div class="form-group">
+            <label>Expected Salary *</label>
+            <input type="text" id="salary" required placeholder="Numeric only">
+            <small class="error"></small>
+        </div>
+
+        <!-- GitHub/Portfolio -->
+        <div class="form-group">
+            <label>GitHub/Portfolio Link</label>
+            <input type="url" id="github" placeholder="https://">
+            <div id="githubPreview"></div>
+        </div>
+
+        <!-- Willing to Relocate -->
+        <div class="form-group">
+            <label>Willing to Relocate? *</label>
+            <select id="relocate" required>
+                <option value="">Select</option>
+                <option value="Yes">Yes, I am willing to relocate</option>
+                <option value="No">No, I prefer my current location</option>
+            </select>
+        </div>
+
+        <!-- Relocate Cities -->
+        <div class="form-group" id="relocateCities">
+            <label>Preferred Cities *</label>
+            <select id="cities">
+                <option value="">Select City</option>
+                <option>Bangalore</option>
+                <option>Hyderabad</option>
+                <option>Pune</option>
+                <option>Chennai</option>
+                <option>Delhi</option>
+            </select>
+        </div>
+
+        <!-- Submit -->
+        <div style="text-align:center; margin-top:20px;">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+
+    <div id="confirmation">Registration submitted successfully! Thank you.</div>
+</div>
+
+<footer>
+Tech Job Portal &copy; 2025
+</footer>
+
+<script>
+$(document).ready(function(){
+    // Skills highlight
+    $("#skills").hover(
+        function(){ $(this).addClass("highlight"); },
+        function(){ $(this).removeClass("highlight"); }
+    );
+
+    // GitHub preview
+    $("#github").on("input", function(){
+        let val = $(this).val();
+        $("#githubPreview").text(val ? "Preview: " + val : "");
+    });
+
+    // Relocate toggle
+    $("#relocate").change(function(){
+        if($(this).val() === "Yes") $("#relocateCities").slideDown();
+        else { $("#relocateCities").slideUp(); $("#cities").val(""); }
+    });
+
+    // Resume file validation
+    $("#resume").change(function(){
+        const file = this.files[0];
+        if(file){
+            const sizeMB = file.size/1024/1024;
+            if(file.type !== "application/pdf"){ alert("Only PDF allowed"); $(this).val(""); return; }
+            if(sizeMB > 5){ alert("File size must be <=5MB"); $(this).val(""); return; }
+            $("#resumePreview").text("Selected file: " + file.name + " (" + sizeMB.toFixed(2) + " MB)");
+        }
+    });
+
+    // Full Name validation: alphabets only
+    $("#fullName").on("input", function(){ this.value=this.value.replace(/[^a-zA-Z ]/g,''); });
+
+    // Mobile validation: 10 digits, starts with 6-9
+    $("#mobile").on("input", function(){
+        this.value=this.value.replace(/[^0-9]/g,''); // numbers only
+        if(this.value.length>10) this.value=this.value.slice(0,10);
+    });
+    $("#mobile").blur(function(){
+        const val = $(this).val();
+        if(!/^[6-9][0-9]{9}$/.test(val)){
+            $(this).addClass("invalid");
+            $(this).siblings(".error").text("Mobile must start with 6-9 and be 10 digits");
+        } else {
+            $(this).removeClass("invalid");
+            $(this).siblings(".error").text("");
+        }
+    });
+
+    // Years of Experience: numbers only, max 2 digits
+    $("#experience").on("input", function(){
+        this.value = this.value.replace(/[^0-9]/g,'');
+        if(this.value.length>2) this.value=this.value.slice(0,2);
+    });
+
+    // Preferred Job Location: alphabets only
+    $("#location").on("input", function(){ this.value=this.value.replace(/[^a-zA-Z ]/g,''); });
+
+    // Salary: numbers only
+    $("#salary").on("input", function(){ this.value=this.value.replace(/[^0-9]/g,''); });
+
+    // Form submission validation
+    $("#jobForm").submit(function(e){
+        e.preventDefault();
+        let valid = true;
+
+        // Check required fields
+        $("#jobForm [required]").each(function(){
+            if(!$(this).val()){
+                $(this).addClass("invalid");
+                valid = false;
+            } else $(this).removeClass("invalid");
+        });
+
+        // Relocate cities required if relocate = Yes
+        if($("#relocateCities").is(":visible") && !$("#cities").val()){ 
+            $("#cities").addClass("invalid"); valid=false; 
+        } else $("#cities").removeClass("invalid");
+
+        // Mobile validation
+        const mobileVal = $("#mobile").val();
+        if(!/^[6-9][0-9]{9}$/.test(mobileVal)){ valid=false; $("#mobile").addClass("invalid"); }
+
+        if(valid){ 
+            $("#jobForm").fadeOut();
+            $("#confirmation").fadeIn();
+        } else { alert("Please correct the highlighted fields."); }
+    });
+});
+</script>
+
+</body>
+</html>
+

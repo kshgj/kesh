@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Government of India | COVID-19 Vaccination Registration</title>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Material Icons -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<style>
+/* ---------- GLOBAL STYLES ---------- */
+body {margin:0;padding:0;background:#eef3f8;font-family:'Inter',sans-serif;}
+.header {background:#003d7a;padding:18px 40px;display:flex;align-items:center;gap:18px;color:white;box-shadow:rgba(0,0,0,0.18) 0px 4px 12px;}
+.header img {height:62px;}
+.header-title {display:flex;flex-direction:column;line-height:1.3;}
+.header-title h1 {margin:0;font-size:26px;font-weight:600;}
+.header-title span {font-size:15px;opacity:0.9;}
+.container {max-width:900px;margin:40px auto;background:white;padding:40px;border-radius:18px;box-shadow:rgba(0,0,0,0.07) 0px 4px 20px;animation:fadeIn 0.5s ease;}
+@keyframes fadeIn {from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);}}
+h2 {text-align:center;color:#003d7a;font-size:26px;font-weight:700;margin-bottom:28px;}
+.section-title {margin:20px 0 10px 0;padding-bottom:6px;font-weight:600;font-size:17px;border-bottom:2px solid #003d7a33;color:#003d7a;}
+.form-group {margin-bottom:18px;}
+label {font-weight:550;display:block;margin-bottom:6px;font-size:15px;}
+input, select {padding:14px;width:100%;border:1px solid #d4ddeb;border-radius:10px;font-size:15px;transition:0.23s ease;background:#f8fbff;}
+input:focus, select:focus {outline:none;border-color:#006dd1;background:#ffffff;box-shadow:0 0 0 4px rgba(0,109,209,0.15);}
+.highlight {background:#fff7cc !important;}
+.error {color:#d93025;font-size:13px;margin-top:4px;display:block;}
+#hints {background:#eaf4ff;padding:12px;margin-bottom:20px;border-left:4px solid #006dd1;border-radius:6px;display:none;font-size:14px;}
+#comorb-box {display:none;background:#f0f6ff;padding:15px;border-radius:10px;margin-top:10px;line-height:1.8;}
+button {background:#006dd1;color:white;padding:16px 20px;font-size:17px;border:none;border-radius:12px;cursor:pointer;width:100%;font-weight:600;letter-spacing:.3px;margin-top:10px;transition:.25s ease;}
+button:hover {background:#0055a7;box-shadow:rgba(0,0,0,0.18) 0px 4px 10px;}
+@media(max-width:600px){.container{padding:24px;}.header{flex-direction:column;text-align:center;padding:20px;}}
+
+/* Google-style symptom buttons */
+#symptoms-container {display:flex;gap:10px;margin-top:6px;}
+.symptom-btn {padding:8px 16px;border:1px solid #d4ddeb;border-radius:20px;cursor:pointer;user-select:none;transition:all 0.2s ease;}
+.symptom-btn:hover {border-color:#006dd1;}
+.symptom-btn.selected {background-color:#006dd1;color:white;border-color:#006dd1;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Emblem_of_India_%28gold%29.svg/1200px-Emblem_of_India_%28gold%29.svg.png">
+<div class="header-title">
+<h1>Government of India</h1>
+<span>Ministry of Health & Family Welfare</span>
+</div>
+</div>
+
+<!-- MAIN CONTAINER -->
+<div class="container">
+
+<h2>COVID-19 Vaccination Registration</h2>
+
+<div id="hints"></div>
+
+<form id="vaccineForm">
+
+<div class="section-title">Personal Information</div>
+<div class="form-group">
+<label>Full Name</label>
+<input type="text" id="fullName" class="field" data-hint="Enter your full legal name.">
+<span class="error" id="nameErr"></span>
+</div>
+
+<div class="form-group">
+<label>Age</label>
+<input type="number" id="age" class="field" data-hint="You must be 18+ to register.">
+<span class="error" id="ageErr"></span>
+</div>
+
+<div class="form-group">
+<label>Gender</label>
+<select id="gender" class="field" data-hint="Select gender.">
+<option value="">Select</option>
+<option>Male</option>
+<option>Female</option>
+<option>Other</option>
+</select>
+<span class="error" id="genderErr"></span>
+</div>
+
+<div class="section-title">Identification & Contact</div>
+<div class="form-group">
+<label>Aadhaar Number</label>
+<input type="text" id="aadhaar" class="field" data-hint="Enter a valid 12-digit Aadhaar number.">
+<span class="error" id="aadhaarErr"></span>
+</div>
+
+<div class="form-group">
+<label>Mobile Number</label>
+<input type="text" id="mobile" class="field" data-hint="Enter a valid 10-digit Indian mobile number.">
+<span class="error" id="mobileErr"></span>
+</div>
+
+<div class="form-group">
+<label>Email</label>
+<input type="text" id="email" class="field" data-hint="Enter your email address.">
+<span class="error" id="emailErr"></span>
+</div>
+
+<div class="form-group">
+<label>Address</label>
+<input type="text" id="address" class="field" data-hint="Enter residential address.">
+<span class="error" id="addressErr"></span>
+</div>
+
+<div class="section-title">Location</div>
+<div class="form-group">
+<label>State</label>
+<select id="state" class="field" data-hint="Choose your state.">
+<option value="">Select</option>
+<option>Maharashtra</option>
+<option>Karnataka</option>
+<option>Delhi</option>
+<option>Tamil Nadu</option>
+<option>Uttar Pradesh</option>
+</select>
+<span class="error" id="stateErr"></span>
+</div>
+
+<div class="form-group">
+<label>District</label>
+<select id="district" class="field" data-hint="Select district.">
+<option value="">Select</option>
+</select>
+<span class="error" id="districtErr"></span>
+</div>
+
+<div class="section-title">Vaccination Details</div>
+<div class="form-group">
+<label>Vaccination Dose</label>
+<select id="dose" class="field" data-hint="Select dose type.">
+<option value="">Select</option>
+<option value="1st">1st Dose</option>
+<option value="2nd">2nd Dose</option>
+<option value="Booster">Booster</option>
+</select>
+<span class="error" id="doseErr"></span>
+</div>
+
+<div class="form-group">
+<label>Vaccination Center</label>
+<select id="center">
+<option value="">Select Center</option>
+</select>
+<span class="error" id="centerErr"></span>
+</div>
+
+<div class="form-group">
+<label>Date of Appointment</label>
+<input type="date" id="date" class="field" data-hint="Choose appointment date.">
+<span class="error" id="dateErr"></span>
+</div>
+
+<div class="section-title">Health Information</div>
+<div class="form-group">
+<label>Symptoms in last 14 days?</label>
+<div id="symptoms-container"></div>
+<span class="error" id="symptomsErr"></span>
+</div>
+
+<div id="comorb-box">
+<label>Co-morbidities</label><br>
+<input type="checkbox" value="Diabetes"> Diabetes<br>
+<input type="checkbox" value="Hypertension"> Hypertension<br>
+<input type="checkbox" value="Asthma"> Asthma<br>
+<input type="checkbox" value="Heart Disease"> Heart Disease<br>
+<span class="error" id="comorbErr"></span>
+</div>
+
+<button type="submit">Submit Registration</button>
+</form>
+</div>
+
+<script>
+$(document).ready(function(){
+
+    // ---------- FIELD HIGHLIGHT & HINTS ----------
+    $(".field").mouseenter(function(){ $(this).addClass("highlight"); })
+                 .mouseleave(function(){ $(this).removeClass("highlight"); })
+                 .mousemove(function(){ $("#hints").show().text($(this).data("hint")); });
+
+    // ---------- STATES & DISTRICTS ----------
+    const statesDistricts = {
+        "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik"],
+        "Karnataka": ["Bengaluru", "Mysore", "Mangalore", "Hubli"],
+        "Delhi": ["Central Delhi", "South Delhi", "North Delhi"],
+        "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Salem"],
+        "Uttar Pradesh": ["Lucknow", "Kanpur", "Varanasi", "Agra"]
+    };
+
+    $("#state").change(function(){
+        let state = $(this).val();
+        $("#district").empty().append('<option value="">Select</option>');
+        if(statesDistricts[state]){
+            statesDistricts[state].forEach(d => $("#district").append(`<option>${d}</option>`));
+        }
+    });
+
+    // ---------- GOOGLE STYLE SYMPTOMS TOGGLE ----------
+    const symptomOptions = ["Yes", "No"];
+    $("#symptoms-container").html(symptomOptions.map(opt => `<div class="symptom-btn" data-value="${opt}">${opt}</div>`).join(''));
+
+    $(document).on('click', '.symptom-btn', function(){
+        $('.symptom-btn').removeClass('selected');
+        $(this).addClass('selected');
+        if($(this).data('value') === "Yes") $("#comorb-box").slideDown();
+        else $("#comorb-box").slideUp();
+    });
+
+    // ---------- VACCINATION CENTERS ----------
+    const centers = {
+        "1st": ["City Hospital", "Community Hall A", "Govt Clinic 4"],
+        "2nd": ["Mega Vaccination Center", "City Hospital"],
+        "Booster": ["Special Booster Camp", "Govt Clinic 4"]
+    };
+
+    $("#dose").change(function(){
+        let dose = $(this).val();
+        $("#center").empty().append('<option value="">Select Center</option>');
+        if(centers[dose]) centers[dose].forEach(c => $("#center").append(`<option>${c}</option>`));
+    });
+
+    // ---------- FORM VALIDATION ----------
+    $("#vaccineForm").submit(function(e){
+        let valid = true;
+        $(".error").text("");
+
+        let name = $("#fullName").val().trim();
+        let age = parseInt($("#age").val());
+        let gender = $("#gender").val();
+        let aadhaar = $("#aadhaar").val().trim();
+        let mobile = $("#mobile").val().trim();
+        let email = $("#email").val().trim();
+        let address = $("#address").val().trim();
+        let state = $("#state").val();
+        let district = $("#district").val();
+        let dose = $("#dose").val();
+        let center = $("#center").val();
+        let date = $("#date").val();
+        let symptoms = $(".symptom-btn.selected").data('value');
+
+        let today = new Date().toISOString().split('T')[0];
+
+        if(!/^[A-Za-z\s]{3,}$/.test(name)){ $("#nameErr").text("Name must contain only letters and spaces (min 3 chars)."); valid=false; }
+        if(isNaN(age) || age<18 || age>120){ $("#ageErr").text("Age must be between 18 and 120."); valid=false; }
+        if(!gender){ $("#genderErr").text("Select gender."); valid=false; }
+        if(!/^\d{12}$/.test(aadhaar)){ $("#aadhaarErr").text("Aadhaar must be 12 digits."); valid=false; }
+        if(!/^[6-9]\d{9}$/.test(mobile)){ $("#mobileErr").text("Invalid mobile number."); valid=false; }
+        if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ $("#emailErr").text("Invalid email format."); valid=false; }
+        if(address.length<5){ $("#addressErr").text("Enter valid address."); valid=false; }
+        if(!state){ $("#stateErr").text("Select state."); valid=false; }
+        if(!district){ $("#districtErr").text("Select district."); valid=false; }
+        if(!dose){ $("#doseErr").text("Select dose."); valid=false; }
+        if(!center){ $("#centerErr").text("Select center."); valid=false; }
+        if(!date || date<today){ $("#dateErr").text("Select valid appointment date."); valid=false; }
+        if(!symptoms){ $("#symptomsErr").text("Select if you had symptoms."); valid=false; }
+        if(symptoms==="Yes" && $("#comorb-box input:checked").length===0){ $("#comorbErr").text("Select at least one co-morbidity."); valid=false; }
+
+        if(!valid) e.preventDefault();
+    });
+
+});
+</script>
+</body>
+</html>
+
+
