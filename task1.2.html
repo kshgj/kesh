@@ -163,7 +163,7 @@ button:hover {background:#0055a7;box-shadow:rgba(0,0,0,0.18) 0px 4px 10px;}
 
 <div class="form-group">
 <label>Email</label>
-<input type="text" id="email" class="field" data-hint="Enter email address.">
+<input type="text" id="email" class="field" data-hint="Enter email address. No numbers allowed after @.">
 <span class="error" id="emailErr"></span>
 </div>
 
@@ -326,7 +326,13 @@ const rules = {
     gender: v => v !== "",
     aadhaar: v => /^\d{12}$/.test(v),
     mobile: v => /^[6-9]\d{9}$/.test(v),
-    email: v => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v),
+    // Email: no numbers after @
+    email: v => {
+        let general = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+        if(!general) return false;
+        let domainPart = v.split("@")[1] || "";
+        return !/\d/.test(domainPart);
+    },
     address: v => v.length >= 5,
     state: v => v !== "",
     district: v => v !== "",
@@ -341,7 +347,7 @@ const messages = {
     gender: "Select gender.",
     aadhaar: "Aadhaar must be 12 digits.",
     mobile: "Invalid mobile number.",
-    email: "Invalid email format.",
+    email: "Invalid email format (no numbers allowed after @).",
     address: "Enter a proper address.",
     state: "Select state.",
     district: "Select district.",
@@ -402,8 +408,3 @@ $("#vaccineForm").submit(function(e){
 
 </body>
 </html>
-
-
-
-
-

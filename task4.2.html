@@ -43,7 +43,6 @@ h2 {
     margin-bottom:20px; 
 }
 
-/* Form groups and labels */
 .form-group { 
     margin-bottom:20px; 
     position:relative; 
@@ -56,7 +55,6 @@ label {
     margin-bottom:6px; 
 }
 
-/* Input, textarea, dropdown styling */
 input, textarea, select { 
     padding:10px 12px; 
     border:2px solid #dcd6ff; 
@@ -80,7 +78,6 @@ small.error {
     left:0; 
 }
 
-/* Skills highlight & layout using CSS Grid */
 #skills {
     padding: 10px;
     border: 2px solid #dcd6ff;
@@ -107,7 +104,6 @@ small.error {
 #githubPreview, #resumePreview { margin-top:6px; font-size:14px; color:#555; }
 #confirmation { display:none; text-align:center; font-size:18px; color:green; margin-top:20px; }
 
-/* Button */
 button { 
     background:#1a73e8; 
     color:white; 
@@ -120,7 +116,6 @@ button {
 }
 button:hover { background:#155ab6; }
 
-/* Responsive */
 @media(max-width:768px){ 
     .container { margin:20px; padding:20px; } 
 }
@@ -138,21 +133,21 @@ button:hover { background:#155ab6; }
         <!-- Full Name -->
         <div class="form-group">
             <label>Full Name *</label>
-            <input type="text" id="fullName" required placeholder="Alphabets only">
+            <input type="text" id="fullName" placeholder="Alphabets only">
             <small class="error"></small>
         </div>
 
         <!-- Date of Birth -->
         <div class="form-group">
             <label>Date of Birth *</label>
-            <input type="date" id="dob" required>
+            <input type="date" id="dob">
             <small class="error"></small>
         </div>
 
         <!-- Gender -->
         <div class="form-group">
             <label>Gender *</label>
-            <select id="gender" required>
+            <select id="gender">
                 <option value="">Select Gender</option>
                 <option>Male</option>
                 <option>Female</option>
@@ -165,21 +160,21 @@ button:hover { background:#155ab6; }
         <!-- Email -->
         <div class="form-group">
             <label>Email *</label>
-            <input type="email" id="email" required placeholder="example@mail.com">
+            <input type="text" id="email" placeholder="example@mail.com">
             <small class="error"></small>
         </div>
 
         <!-- Mobile -->
         <div class="form-group">
             <label>Mobile Number *</label>
-            <input type="text" id="mobile" placeholder="10 digits, start with 6-9" required>
+            <input type="text" id="mobile" placeholder="10 digits, start with 6-9">
             <small class="error"></small>
         </div>
 
         <!-- Qualification -->
         <div class="form-group">
             <label>Highest Qualification *</label>
-            <select id="qualification" required>
+            <select id="qualification">
                 <option value="">Select</option>
                 <option>Bachelor's</option>
                 <option>Master's</option>
@@ -192,7 +187,7 @@ button:hover { background:#155ab6; }
         <!-- Experience -->
         <div class="form-group">
             <label>Years of Experience *</label>
-            <input type="number" id="experience" min="0" max="99" required placeholder="0-99">
+            <input type="number" id="experience" min="0" max="99" placeholder="0-99">
             <small class="error"></small>
         </div>
 
@@ -209,7 +204,7 @@ button:hover { background:#155ab6; }
         <!-- Resume -->
         <div class="form-group">
             <label>Resume Upload (Any format, max 2MB) *</label>
-            <input type="file" id="resume" required>
+            <input type="file" id="resume">
             <div id="resumePreview"></div>
             <small class="error"></small>
         </div>
@@ -217,7 +212,7 @@ button:hover { background:#155ab6; }
         <!-- Preferred Job Location -->
         <div class="form-group">
             <label>Preferred Job Location *</label>
-            <select id="location" required>
+            <select id="location">
                 <option value="">Select Location</option>
                 <option>Bangalore</option>
                 <option>Hyderabad</option>
@@ -231,14 +226,14 @@ button:hover { background:#155ab6; }
         <!-- Join Date -->
         <div class="form-group">
             <label>Available to Join From *</label>
-            <input type="date" id="joinDate" required>
+            <input type="date" id="joinDate">
             <small class="error"></small>
         </div>
 
         <!-- Expected Salary -->
         <div class="form-group">
             <label>Expected Salary *</label>
-            <input type="text" id="salary" required placeholder="Numeric only">
+            <input type="text" id="salary" placeholder="Numeric only">
             <small class="error"></small>
         </div>
 
@@ -252,7 +247,7 @@ button:hover { background:#155ab6; }
         <!-- Willing to Relocate -->
         <div class="form-group">
             <label>Willing to Relocate? *</label>
-            <select id="relocate" required>
+            <select id="relocate">
                 <option value="">Select</option>
                 <option value="Yes">Yes, I am willing to relocate</option>
                 <option value="No">No, I prefer my current location</option>
@@ -289,6 +284,7 @@ Tech Job Portal &copy; 2025
 
 <script>
 $(document).ready(function(){
+
     // Skills highlight
     $("#skills").hover(
         function(){ $(this).addClass("highlight"); },
@@ -304,10 +300,10 @@ $(document).ready(function(){
     // Relocate toggle
     $("#relocate").change(function(){
         if($(this).val() === "Yes") $("#relocateCities").slideDown();
-        else { $("#relocateCities").slideUp(); $("#cities").val(""); $("#cities").removeClass("invalid").siblings(".error").text(""); }
+        else { $("#relocateCities").slideUp(); $("#cities").val("").removeClass("invalid").siblings(".error").text(""); }
     });
 
-    // Resume file validation (any format, <=2MB)
+    // Resume file validation
     $("#resume").change(function(){
         const file = this.files[0];
         if(file){
@@ -322,14 +318,14 @@ $(document).ready(function(){
         }
     });
 
-    // Full Name: alphabets only live
-    $("#fullName").on("input", function(){
+    // Full Name validation
+    $("#fullName").on("input blur", function(){
         this.value = this.value.replace(/[^a-zA-Z ]/g,'');
         if(!this.value) $(this).addClass("invalid").siblings(".error").text("Required");
         else $(this).removeClass("invalid").siblings(".error").text("");
     });
 
-    // Mobile: 10 digits, 6-9
+    // Mobile validation
     $("#mobile").on("input", function(){
         this.value=this.value.replace(/[^0-9]/g,''); 
         if(this.value.length>10) this.value=this.value.slice(0,10);
@@ -341,30 +337,45 @@ $(document).ready(function(){
         } else $(this).removeClass("invalid").siblings(".error").text("");
     });
 
-    // Experience: numbers only
-    $("#experience").on("input", function(){
-        this.value = this.value.replace(/[^0-9]/g,'');
-        if(this.value.length>2) this.value=this.value.slice(0,2);
+    // Experience
+    $("#experience").on("input blur", function(){
+        this.value = this.value.replace(/[^0-9]/g,'').slice(0,2);
         if(!this.value) $(this).addClass("invalid").siblings(".error").text("Required");
         else $(this).removeClass("invalid").siblings(".error").text("");
     });
 
-    // Salary: numbers only
-    $("#salary").on("input", function(){
+    // Salary
+    $("#salary").on("input blur", function(){
         this.value = this.value.replace(/[^0-9]/g,'');
         if(!this.value) $(this).addClass("invalid").siblings(".error").text("Required");
         else $(this).removeClass("invalid").siblings(".error").text("");
     });
 
-    // DOB: must be at least 18 years
+    // DOB: at least 18
     const today = new Date().toISOString().split('T')[0];
     $("#dob").attr("max", today);
-    $("#dob").on("change", function(){
+    $("#dob").on("change blur", function(){
         const dob = new Date(this.value);
         const age = new Date().getFullYear() - dob.getFullYear();
-        if(age < 18){
+        if(!this.value || age < 18){
             $(this).addClass("invalid").siblings(".error").text("Must be at least 18 years old");
         } else $(this).removeClass("invalid").siblings(".error").text("");
+    });
+
+    // Email validation
+    $("#email").on("input blur", function(){
+        const val = $(this).val().trim();
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!val){
+            $(this).addClass("invalid").siblings(".error").text("Required");
+        } else if(!emailPattern.test(val)){
+            $(this).addClass("invalid").siblings(".error").text("Enter a valid email");
+        } else {
+            const domainPart = val.split("@")[1] || "";
+            if(/\d/.test(domainPart)){
+                $(this).addClass("invalid").siblings(".error").text("Numbers not allowed after '@'");
+            } else $(this).removeClass("invalid").siblings(".error").text("");
+        }
     });
 
     // Form submit
@@ -373,26 +384,20 @@ $(document).ready(function(){
         let valid = true;
 
         // Required validation
-        $("#jobForm [required]").each(function(){
-            if(!$(this).val()){
+        $("#jobForm input, #jobForm select").each(function(){
+            if($(this).is(":visible") && !$(this).val()){
                 $(this).addClass("invalid").siblings(".error").text("Required");
-                valid = false;
-            } else {
-                $(this).removeClass("invalid").siblings(".error").text("");
+                valid=false;
             }
         });
 
-        // Relocate cities required if visible
-        if($("#relocateCities").is(":visible") && !$("#cities").val()){
-            $("#cities").addClass("invalid").siblings(".error").text("Select city");
+        // Mobile regex check
+        if(!/^[6-9][0-9]{9}$/.test($("#mobile").val())){
+            $("#mobile").addClass("invalid");
             valid=false;
         }
 
-        // Mobile regex check
-        const mobileVal = $("#mobile").val();
-        if(!/^[6-9][0-9]{9}$/.test(mobileVal)){ valid=false; $("#mobile").addClass("invalid"); }
-
-        // Skills at least 1 selected
+        // Skills at least 1
         if($("#skills input:checked").length==0){ 
             $("#skills").addClass("invalid").find("small.error").text("Select at least one skill"); 
             valid=false; 
@@ -401,11 +406,26 @@ $(document).ready(function(){
         // Resume check
         if(!$("#resume").val()){ valid=false; $("#resume").addClass("invalid").siblings(".error").text("Upload resume"); }
 
+        // Relocate cities required if visible
+        if($("#relocateCities").is(":visible") && !$("#cities").val()){
+            $("#cities").addClass("invalid").siblings(".error").text("Select city");
+            valid=false;
+        }
+
+        // Email validation final check
+        const emailVal = $("#email").val().trim();
+        const domainPart = emailVal.split("@")[1] || "";
+        if(!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal) || /\d/.test(domainPart)){
+            $("#email").addClass("invalid");
+            valid=false;
+        }
+
         if(valid){ 
             $("#jobForm").fadeOut();
             $("#confirmation").fadeIn();
         } else { alert("Please correct the highlighted fields."); }
     });
+
 });
 </script>
 

@@ -3,53 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>XYZ University Admission Form</title>
+<title>College Admission Form with Live Validation</title>
 
-<!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Google Fonts & Icons -->
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <style>
-/* Global Styles */
 body { font-family:'Roboto', sans-serif; background:#f5f6fa; margin:0; color:#333; }
 h2,h3 { text-align:center; color:#4B2FBF; }
 .container { max-width: 800px; margin: 40px auto; background:#fff; padding:30px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.1); }
 header, footer { text-align:center; padding:15px 0; background:#4B2FBF; color:white; font-weight:500; border-radius:8px; margin-bottom:20px; }
-
-/* Progress Bar */
 .progress-container { display:flex; justify-content:space-between; margin-bottom:30px; }
 .progress-step { width:30px; height:30px; background:#dcd6ff; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#4B2FBF; font-weight:bold; transition:0.3s; }
 .progress-step.active { background:#4B2FBF; color:white; }
-
-/* Form Steps */
 .form-step { display:none; }
 .step-active { display:block; }
 .form-group { margin-bottom:20px; position:relative; }
 label { display:block; font-weight:500; margin-bottom:6px; }
-input, select, textarea { width:100%; padding:10px 12px; border:2px solid #dcd6ff; border-radius:6px; font-size:15px; transition: all 0.3s; }
+input, select, textarea { width:100%; padding:10px 12px; border:2px solid #dcd6ff; border-radius:6px; font-size:15px; transition: all 0.3s; box-sizing:border-box; }
 input:focus, select:focus, textarea:focus { border-color:#4B2FBF; box-shadow:0 0 5px rgba(75,47,191,0.3); outline:none; }
 input.invalid, select.invalid, textarea.invalid { border-color:red; }
-small.error { color:red; font-size:13px; position:absolute; bottom:-18px; left:0; }
+input.valid, select.valid, textarea.valid { border-color:green; }
+.error { color:red; font-size:13px; position:absolute; bottom:-18px; left:0; }
 button { background:#4B2FBF; color:white; border:none; padding:12px 25px; border-radius:6px; font-weight:600; cursor:pointer; transition:0.3s; }
 button:hover { background:#351fa0; }
-
-/* Guardian Section */
+button:disabled { background:#999; cursor:not-allowed; }
 #guardianSection { display:none; padding:15px; background:#f1f1f1; border-radius:8px; margin-top:10px; }
-
-/* GPA Preview */
-#gpaPreview { font-weight:bold; margin-top:10px; }
-
-/* Tooltip */
-.tooltip { position:absolute; top:50%; right:10px; transform:translateY(-50%); font-size:14px; color:#555; }
-
-/* File Preview */
 #filePreview { margin-top:10px; font-size:14px; color:#333; }
-
-/* Confirmation */
 #confirmation { display:none; text-align:center; font-size:18px; color:green; margin-top:20px; }
+textarea { resize:none; }
+
+/* Step 3 options styling like Google Forms */
+.radio-group, .select-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 5px;
+}
+.radio-group label, .select-group label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 500;
+}
 
 @media(max-width:768px){ .container { margin:20px; padding:20px; } }
 </style>
@@ -57,7 +53,7 @@ button:hover { background:#351fa0; }
 <body>
 
 <header>
-<h1>XYZ University Admission Portal</h1>
+<h1>Global University Admission Portal</h1>
 </header>
 
 <div class="container">
@@ -70,13 +66,12 @@ button:hover { background:#351fa0; }
     </div>
 
     <form id="admissionForm" enctype="multipart/form-data">
-        <!-- Step 1: Personal Info -->
+        <!-- Step 1 -->
         <div class="form-step step-active">
             <div class="form-group">
                 <label>Student Name *</label>
                 <input type="text" id="studentName" required>
                 <small class="error"></small>
-                <span class="tooltip">Alphabets only</span>
             </div>
             <div class="form-group">
                 <label>Date of Birth *</label>
@@ -91,6 +86,7 @@ button:hover { background:#351fa0; }
                     <option>Female</option>
                     <option>Other</option>
                 </select>
+                <small class="error"></small>
             </div>
             <div class="form-group">
                 <label>Father’s Name *</label>
@@ -103,11 +99,11 @@ button:hover { background:#351fa0; }
                 <small class="error"></small>
             </div>
             <div class="form-btns" style="text-align:right;">
-                <button type="button" class="next-btn">Next</button>
+                <button type="button" class="next-btn" disabled>Next</button>
             </div>
         </div>
 
-        <!-- Step 2: Academic Info -->
+        <!-- Step 2 -->
         <div class="form-step">
             <div class="form-group">
                 <label>Address *</label>
@@ -116,15 +112,14 @@ button:hover { background:#351fa0; }
             </div>
             <div class="form-group">
                 <label>10th Mark % *</label>
-                <input type="text" id="mark10" required placeholder="0.00">
+                <input type="text" id="mark10" required placeholder="0-100">
                 <small class="error"></small>
             </div>
             <div class="form-group">
                 <label>12th Mark % *</label>
-                <input type="text" id="mark12" required placeholder="0.00">
+                <input type="text" id="mark12" required placeholder="0-100">
                 <small class="error"></small>
             </div>
-            <div id="gpaPreview">GPA: 0</div>
             <div class="form-group">
                 <label>Course Applying For *</label>
                 <select id="course" required>
@@ -143,17 +138,18 @@ button:hover { background:#351fa0; }
                 <small class="error"></small>
             </div>
             <div class="form-group">
-                <label>Upload Marksheet (PDF/JPG, ≤5MB) *</label>
+                <label>Upload Marksheet (≤2MB) *</label>
                 <input type="file" id="marksheet" accept=".pdf,.jpg,.jpeg" required>
                 <div id="filePreview"></div>
+                <small class="error"></small>
             </div>
             <div class="form-btns" style="text-align:right;">
                 <button type="button" class="back-btn">Back</button>
-                <button type="button" class="next-btn">Next</button>
+                <button type="button" class="next-btn" disabled>Next</button>
             </div>
         </div>
 
-        <!-- Step 3: Contact Info -->
+        <!-- Step 3 -->
         <div class="form-step">
             <div class="form-group">
                 <label>Email *</label>
@@ -162,42 +158,54 @@ button:hover { background:#351fa0; }
             </div>
             <div class="form-group">
                 <label>Mobile *</label>
-                <input type="text" id="mobile" required placeholder="10 digit number starting 6-9">
+                <input type="text" id="mobile" required placeholder="10 digit number">
                 <small class="error"></small>
             </div>
             <div class="form-group">
                 <label>Blood Group *</label>
-                <select id="bloodGroup" required>
-                    <option value="">Select</option>
-                    <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
-                    <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
-                </select>
+                <div class="radio-group">
+                    <label><input type="radio" name="bloodGroup" value="A+"> A+</label>
+                    <label><input type="radio" name="bloodGroup" value="A-"> A-</label>
+                    <label><input type="radio" name="bloodGroup" value="B+"> B+</label>
+                    <label><input type="radio" name="bloodGroup" value="B-"> B-</label>
+                    <label><input type="radio" name="bloodGroup" value="O+"> O+</label>
+                    <label><input type="radio" name="bloodGroup" value="O-"> O-</label>
+                    <label><input type="radio" name="bloodGroup" value="AB+"> AB+</label>
+                    <label><input type="radio" name="bloodGroup" value="AB-"> AB-</label>
+                </div>
                 <small class="error"></small>
             </div>
+
             <div class="form-group">
                 <label>Hostel Required? *</label>
-                <input type="radio" name="hostel" value="Yes"> Yes
-                <input type="radio" name="hostel" value="No"> No
+                <div class="radio-group">
+                    <label><input type="radio" name="hostel" value="Yes"> Yes</label>
+                    <label><input type="radio" name="hostel" value="No"> No</label>
+                </div>
                 <small class="error"></small>
             </div>
+
             <div id="guardianSection">
                 <h4>Guardian Details</h4>
                 <div class="form-group">
                     <label>Guardian Name</label>
                     <input type="text" id="guardianName">
+                    <small class="error"></small>
                 </div>
                 <div class="form-group">
                     <label>Guardian Contact</label>
                     <input type="text" id="guardianContact">
+                    <small class="error"></small>
                 </div>
             </div>
+
             <div class="form-btns" style="text-align:right;">
                 <button type="button" class="back-btn">Back</button>
-                <button type="button" class="next-btn">Next</button>
+                <button type="button" class="next-btn" disabled>Next</button>
             </div>
         </div>
 
-        <!-- Step 4: Confirmation -->
+        <!-- Step 4 -->
         <div class="form-step">
             <h3>Review & Submit</h3>
             <p>Please review all information before submission.</p>
@@ -212,7 +220,7 @@ button:hover { background:#351fa0; }
 </div>
 
 <footer>
-XYZ University &copy; 2025
+Global University &copy; 2025
 </footer>
 
 <script>
@@ -235,6 +243,7 @@ $(document).ready(function(){
         progress.removeClass("active");
         progress.eq(i).addClass("active");
         currentStep=i;
+        updateNextBtn();
     }
 
     $(".next-btn").click(function(){
@@ -242,132 +251,118 @@ $(document).ready(function(){
     });
     $(".back-btn").click(function(){ showStep(currentStep-1); });
 
-    // Focus effect
-    $("input, select, textarea").focus(function(){ $(this).css("border-color","#4B2FBF"); })
-    .blur(function(){ $(this).css("border-color","#dcd6ff"); });
+    $("input, select, textarea").on("input change", function(){ validateStep(currentStep); updateNextBtn(); });
 
-    // Marks validation
-    $("#mark10,#mark12").on("keyup",function(){ 
-        this.value=this.value.match(/^\d{0,2}(\.\d{0,2})?/); 
-        updateGPA(); 
-    });
-
-    function updateGPA(){
-        let m10 = parseFloat($("#mark10").val())||0;
-        let m12 = parseFloat($("#mark12").val())||0;
-        let gpa = ((m10+m12)/2).toFixed(2);
-        $("#gpaPreview").text("GPA: "+gpa);
-    }
-
-    // Hostel guardian toggle
-    $("input[name='hostel']").change(function(){
-        if($(this).val()=="Yes") $("#guardianSection").slideDown();
-        else $("#guardianSection").slideUp();
-    });
-
-    // DOB >=17
-    $("#dob").blur(function(){
-        const dob = new Date(this.value);
-        const age = new Date().getFullYear() - dob.getFullYear();
-        if(age<17){ 
-            $(this).addClass("invalid").siblings(".error").text("You must be at least 17 years old."); 
-        } else { 
-            $(this).removeClass("invalid").siblings(".error").text(""); 
-        }
-    });
-
-    // File preview & size/type check
-    $("#marksheet").change(function(){
-        if(this.files.length>0){
-            let file=this.files[0];
-            let sizeMB = file.size/1024/1024;
-            let ext = file.name.split('.').pop().toLowerCase();
-            if(!["pdf","jpg","jpeg"].includes(ext)){ alert("Invalid file type"); $(this).val(""); $("#filePreview").text(""); return; }
-            if(sizeMB>5){ alert("File size must be <=5MB"); $(this).val(""); $("#filePreview").text(""); return; }
-            $("#filePreview").text(`Selected file: ${file.name} (${sizeMB.toFixed(2)} MB)`);
-        }
-    });
-
-    // Course electives
     $("#course").change(function(){
         const course=$(this).val();
         if(electivesOptions[course]){
             let options = electivesOptions[course].map(e=>`<option>${e}</option>`).join('');
             $("#electives").html('<option value="">Select Elective</option>'+options);
-            $("#electivesContainer").slideDown();
-        } else { $("#electivesContainer").slideUp(); }
+            $("#electivesContainer").slideDown(updateNextBtn);
+        } else { $("#electivesContainer").slideUp(updateNextBtn); }
     });
 
-    // Step validation function
-    function validateStep(step){
-        let valid=true;
-        steps.eq(step).find("input, select, textarea").each(function(){
-            $(this).siblings(".error").text(""); // clear previous error
-            if($(this).prop("required") && !$(this).val()){ 
-                $(this).addClass("invalid"); 
-                $(this).siblings(".error").text("This field is required"); 
-                valid=false; 
-                return;
-            } else { $(this).removeClass("invalid"); }
+    $("input[name='hostel']").change(function(){
+        if($(this).val()=="Yes") $("#guardianSection").slideDown(updateNextBtn);
+        else $("#guardianSection").slideUp(updateNextBtn);
+    });
 
-            // Specific constraints
-            if(this.id=="studentName"||this.id=="fatherName"||this.id=="motherName"||this.id=="guardianName"){
-                if(!/^[a-zA-Z ]+$/.test($(this).val())){ 
-                    $(this).addClass("invalid"); 
-                    $(this).siblings(".error").text("Only alphabets allowed"); 
-                    valid=false; 
-                }
-            }
+    // Input restrictions for 10th and 12th marks (0-100, whole numbers only)
+    $("#mark10,#mark12").on("input", function() {
+        let val = this.value.replace(/[^0-9]/g, ''); // Remove non-digits
+        if (val !== "") {
+            let num = parseInt(val);
+            if (num > 100) num = 100; // Limit max to 100
+            this.value = num;
+        } else {
+            this.value = "";
+        }
+    });
 
-            if(this.id=="mobile"||this.id=="guardianContact"){
-                if(!/^[6-9][0-9]{9}$/.test($(this).val())){
-                    $(this).addClass("invalid"); 
-                    $(this).siblings(".error").text("10 digits, starting 6-9"); 
-                    valid=false; 
-                }
-            }
+    $("#marksheet").change(function(){
+        if(this.files.length>0){
+            let file=this.files[0];
+            let sizeMB = file.size / 1024 / 1024;
+            if(sizeMB>2){ alert("File must be ≤2MB"); $(this).val(""); $("#filePreview").text(""); return; }
+            $("#filePreview").text("Selected file: "+file.name+" ("+sizeMB.toFixed(2)+" MB)");
+        }
+    });
 
-            if(this.id=="mark10"||this.id=="mark12"){
-                let val=parseFloat($(this).val());
-                if(isNaN(val) || val<0 || val>100){
-                    $(this).addClass("invalid");
-                    $(this).siblings(".error").text("Enter valid 0-100 mark");
-                    valid=false;
-                }
-            }
-
-            if(this.id=="address" && !/^[a-zA-Z0-9\s,.-]+$/.test($(this).val())){
-                $(this).addClass("invalid");
-                $(this).siblings(".error").text("Invalid characters in address");
-                valid=false;
-            }
-
-        });
-
-        // Electives check
-        if($("#electivesContainer").is(":visible") && !$("#electives").val()){ 
-            $("#electives").addClass("invalid"); valid=false;
-        } else { $("#electives").removeClass("invalid"); }
-
-        return valid;
-    }
-
-    // Input constraints on typing
     $("#studentName,#fatherName,#motherName,#guardianName").on("input",function(){ this.value=this.value.replace(/[^a-zA-Z ]/g,''); });
     $("#mobile,#guardianContact").on("input",function(){ this.value=this.value.replace(/[^0-9]/g,''); });
-    $("#mark10,#mark12").on("input",function(){ this.value=this.value.replace(/[^0-9.]/g,''); });
-    $("#address").on("input",function(){ this.value=this.value.replace(/[^a-zA-Z0-9\s,.-]/g,''); });
 
-    // Form submit
     $("#admissionForm").submit(function(e){
         e.preventDefault();
         if(validateStep(currentStep)){
             $("#admissionForm").fadeOut();
             $("#confirmation").fadeIn();
-        } else { alert("Please correct the errors highlighted."); }
+        }
     });
+
+    function validateStep(step){
+        let valid = true;
+        const stepFields = steps.eq(step).find("input, select, textarea").filter(":visible");
+
+        stepFields.each(function(){
+            const id = $(this).attr("id");
+            const val = $(this).val().trim();
+            $(this).removeClass("invalid valid").siblings(".error").text("");
+
+            let fieldValid = true;
+
+            // Required check
+            if($(this).prop("required") && val.length==0) fieldValid=false;
+
+            if(val.length>0){
+                switch(id){
+                    case "studentName": case "fatherName": case "motherName": case "guardianName":
+                        if(!/^[a-zA-Z ]+$/.test(val)){ fieldValid=false; $(this).siblings(".error").text("Only alphabets allowed."); }
+                        break;
+                    case "dob":
+                        const dob = new Date(val);
+                        const age = new Date().getFullYear() - dob.getFullYear();
+                        if(age<17){ fieldValid=false; $(this).siblings(".error").text("You must be at least 17."); }
+                        break;
+                    case "mark10": case "mark12":
+                        const mark = parseInt(val);
+                        if(isNaN(mark) || mark<0 || mark>100){ fieldValid=false; $(this).siblings(".error").text("0-100 only"); }
+                        break;
+                    case "email":
+                        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if(!emailPattern.test(val)){ fieldValid=false; $(this).siblings(".error").text("Invalid email."); }
+                        break;
+                    case "mobile": case "guardianContact":
+                        if(!/^\d{10}$/.test(val)){ fieldValid=false; $(this).siblings(".error").text("10 digits required."); }
+                        break;
+                    case "marksheet":
+                        if(this.files.length==0){ fieldValid=false; $(this).siblings(".error").text("Required"); }
+                        break;
+                }
+            }
+
+            if(fieldValid && val.length>0) $(this).addClass("valid");
+            else if(!fieldValid && val.length>0) $(this).addClass("invalid");
+
+            if(!fieldValid) valid=false;
+        });
+
+        // Electives validation
+        if($("#electivesContainer").is(":visible") && !$("#electives").val()) valid=false;
+
+        // Hostel radio validation
+        if(steps.eq(step).find("input[name='hostel']").length && !$("input[name='hostel']:checked").val()) valid=false;
+
+        return valid;
+    }
+
+    function updateNextBtn(){
+        const nextBtn = steps.eq(currentStep).find(".next-btn");
+        if(validateStep(currentStep)) nextBtn.prop("disabled",false);
+        else nextBtn.prop("disabled",true);
+    }
 });
 </script>
-
 </body>
 </html>
+
+

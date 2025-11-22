@@ -49,6 +49,7 @@ h2 { text-align:center; color:#2980b9; margin-bottom:25px; }
 /* Validation styles */
 input.invalid, select.invalid { border-color:red; }
 input.valid, select.valid { border-color:green; }
+.error-msg { font-size: 13px; margin-top: 3px; display:none; }
 
 /* Button */
 button { background:#2980b9; color:white; border:none; padding:12px 30px; border-radius:8px; font-weight:600; cursor:pointer; transition:0.3s; font-size:16px; }
@@ -56,57 +57,32 @@ button:disabled { background:#ccc; cursor:not-allowed; }
 button:hover:not(:disabled) { background:#1c5980; }
 
 /* Hostel options cards */
-.hostel-options { display:flex; gap:15px; flex-wrap: wrap; margin-top:5px; }
-.hostel-card {
-    flex:1 1 48%;
-    min-width:120px; max-width:48%;
-    padding:12px; text-align:center;
-    border:2px solid #dcd6ff; border-radius:8px;
-    cursor:pointer; transition:all 0.3s; position:relative;
-    background:#fff;
-}
+.hostel-group { position: relative; margin-bottom: 25px; padding-top: 25px; }
+.hostel-group .floating-label { position: absolute; top: 0px; left: 10px; font-size: 14px; color: #2980b9; font-weight: 500; background: #fff; padding: 0 5px; z-index: 1; }
+.hostel-options { display:flex; gap:15px; flex-wrap: wrap; margin-top:10px; }
+.hostel-card { flex:1 1 48%; min-width:120px; max-width:48%; padding:12px; text-align:center; border:2px solid #dcd6ff; border-radius:8px; cursor:pointer; transition:all 0.3s; background:#fff; position: relative; }
 .hostel-card:hover { box-shadow:0 4px 10px rgba(0,0,0,0.1); }
 .hostel-card.selected { border-color:#4285f4; background:#e8f0fe; color:#4285f4; font-weight:600; }
 .hostel-card.selected::after { content: '\f00c'; font-family: "Font Awesome 6 Free"; font-weight:900; position:absolute; top:8px; right:10px; color:#4285f4; font-size:16px; }
 
 /* Gender as input box with icon */
-.gender-input {
-    position:relative;
-}
-.gender-input select {
-    width:100%;
-    padding:12px 40px 12px 35px;
-    border:2px solid #dcd6ff;
-    border-radius:8px;
-    font-size:15px;
-    transition: all 0.3s;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background:url('data:image/svg+xml;utf8,<svg fill="%23999" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
-    background-size: 16px;
-}
-.gender-input label {
-    position:absolute; top:12px; left:35px; color:#999;
-    pointer-events:none; transition: all 0.3s; background:white; padding:0 5px;
-}
-.gender-input select:focus + label,
-.gender-input select:not([value=""]) + label {
-    top:-10px; left:30px; color:#2980b9; font-size:13px; font-weight:500;
-}
+.gender-input { position:relative; }
+.gender-input select { width:100%; padding:12px 40px 12px 35px; border:2px solid #dcd6ff; border-radius:8px; font-size:15px; transition: all 0.3s; appearance: none; -webkit-appearance: none; -moz-appearance: none; background:url('data:image/svg+xml;utf8,<svg fill="%23999" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center; background-size: 16px; }
+.gender-input label { position:absolute; top:12px; left:35px; color:#999; pointer-events:none; transition: all 0.3s; background:white; padding:0 5px; }
+.gender-input select:focus + label, .gender-input select:not([value=""]) + label { top:-10px; left:30px; color:#2980b9; font-size:13px; font-weight:500; }
 
 /* Responsive */
-@media(max-width:500px) {
-    .hostel-card { flex:1 1 100%; max-width:100%; }
-    .input-icon i { left:8px; }
-    .form-group input, .form-group select, .form-group input[type="file"] { padding-left:30px; }
-}
+@media(max-width:500px) { .hostel-card { flex:1 1 100%; max-width:100%; } .input-icon i { left:8px; } .form-group input, .form-group select, .form-group input[type="file"] { padding-left:30px; } }
+
+/* Toast Notification */
+#toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 16px; opacity: 0; transition: opacity 0.5s, bottom 0.5s; }
+#toast.show { visibility: visible; opacity: 1; bottom: 50px; }
 </style>
 </head>
 <body>
 
 <header>
-<h1>College ERP - UG Admission</h1>
+<h1>College - UG Admission</h1>
 </header>
 
 <div class="container">
@@ -118,6 +94,7 @@ button:hover:not(:disabled) { background:#1c5980; }
     <input type="text" id="studentName" placeholder=" " required>
     <label>Student Full Name *</label>
     <i class="fa fa-user"></i>
+    <small class="error-msg">Only alphabets allowed</small>
 </div>
 
 <!-- Date of Birth -->
@@ -125,6 +102,7 @@ button:hover:not(:disabled) { background:#1c5980; }
     <input type="date" id="dob" placeholder=" " required>
     <label>Date of Birth *</label>
     <i class="fa fa-calendar"></i>
+    <small class="error-msg">Age must be between 16 and 30 years</small>
 </div>
 
 <!-- Gender Section -->
@@ -137,6 +115,7 @@ button:hover:not(:disabled) { background:#1c5980; }
     </select>
     <label>Gender *</label>
     <i class="fa fa-venus-mars"></i>
+    <small class="error-msg">This field is required</small>
 </div>
 
 <!-- Department -->
@@ -149,6 +128,7 @@ button:hover:not(:disabled) { background:#1c5980; }
     </select>
     <label>Department *</label>
     <i class="fa fa-building"></i>
+    <small class="error-msg">This field is required</small>
 </div>
 
 <!-- Course Type -->
@@ -161,6 +141,7 @@ button:hover:not(:disabled) { background:#1c5980; }
     </select>
     <label>Course Type *</label>
     <i class="fa fa-book"></i>
+    <small class="error-msg">This field is required</small>
 </div>
 
 <!-- Marks -->
@@ -168,12 +149,16 @@ button:hover:not(:disabled) { background:#1c5980; }
     <input type="number" id="tenthMark" placeholder=" " min="0" max="100" required>
     <label>10th Mark Percentage *</label>
     <i class="fa fa-percent"></i>
+    <small class="error-msg">Enter marks between 40 and 100</small>
 </div>
 <div class="form-group input-icon">
     <input type="number" id="twelfthMark" placeholder=" " min="0" max="100" required>
     <label>12th Mark Percentage *</label>
     <i class="fa fa-percent"></i>
+    <small class="error-msg">Enter marks between 40 and 100</small>
 </div>
+
+<!-- Board -->
 <div class="form-group input-icon">
     <select id="board" required>
         <option value="">Select Board</option>
@@ -183,6 +168,7 @@ button:hover:not(:disabled) { background:#1c5980; }
     </select>
     <label>Board of Study *</label>
     <i class="fa fa-graduation-cap"></i>
+    <small class="error-msg">This field is required</small>
 </div>
 
 <!-- Contact -->
@@ -190,11 +176,13 @@ button:hover:not(:disabled) { background:#1c5980; }
     <input type="text" id="mobile" placeholder=" " required>
     <label>Mobile Number *</label>
     <i class="fa fa-phone"></i>
+    <small class="error-msg">Enter a valid 10-digit number</small>
 </div>
 <div class="form-group input-icon">
     <input type="email" id="email" placeholder=" " required>
     <label>Email ID *</label>
     <i class="fa fa-envelope"></i>
+    <small class="error-msg">Enter a valid email address</small>
 </div>
 
 <!-- Parents -->
@@ -202,31 +190,35 @@ button:hover:not(:disabled) { background:#1c5980; }
     <input type="text" id="fatherName" placeholder=" " required>
     <label>Father’s Name *</label>
     <i class="fa fa-user"></i>
+    <small class="error-msg">Only alphabets allowed</small>
 </div>
 <div class="form-group input-icon">
     <input type="text" id="motherName" placeholder=" " required>
     <label>Mother’s Name *</label>
     <i class="fa fa-user"></i>
+    <small class="error-msg">Only alphabets allowed</small>
 </div>
 
 <!-- Hostel -->
-<div class="form-group input-icon">
-    <label>Hostel Accommodation Required? *</label>
+<div class="form-group hostel-group">
+    <label class="floating-label">Room Accommodation Needed? *</label>
     <div class="hostel-options">
         <div class="hostel-card" data-value="Yes">Yes</div>
         <div class="hostel-card" data-value="No">No</div>
     </div>
+    <small class="error-msg">Please select an option</small>
 </div>
 
 <!-- Room Preference -->
-<div class="form-group input-icon" id="roomPreference">
-    <select>
+<div class="form-group input-icon" id="roomPreference" style="display:none;">
+    <select id="roomType">
         <option value="">Select Room Type</option>
         <option>Single</option>
         <option>Double</option>
         <option>Triple</option>
     </select>
     <label>Room Preference</label>
+    <small class="error-msg">This field is required</small>
 </div>
 
 <!-- Photo Upload -->
@@ -234,6 +226,7 @@ button:hover:not(:disabled) { background:#1c5980; }
     <input type="file" id="photo" accept="image/*" required>
     <label>Upload Passport Size Photo *</label>
     <i class="fa fa-image"></i>
+    <small class="error-msg">Please upload a photo less than 2MB</small>
 </div>
 
 <div style="text-align:center; margin-top:25px;">
@@ -243,8 +236,11 @@ button:hover:not(:disabled) { background:#1c5980; }
 </div>
 
 <footer>
-College ERP &copy; 2025
+College &copy; 2025
 </footer>
+
+<!-- Toast -->
+<div id="toast">Form submitted successfully!</div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -259,57 +255,142 @@ $(document).ready(function(){
         toggleSubmit();
     });
 
+    // Prevent invalid chars
+    $("#studentName, #fatherName, #motherName").on("keypress", function(e){
+        const char = String.fromCharCode(e.which);
+        if(!/^[A-Za-z\s]*$/.test(char)) e.preventDefault();
+    });
+    $("#mobile, #tenthMark, #twelfthMark").on("keypress", function(e){
+        const char = String.fromCharCode(e.which);
+        if(!/^[0-9]*$/.test(char)) e.preventDefault();
+    });
+
     // Validation functions
     function validateText(id){ 
         const val=$("#"+id).val().trim();
         const regex=/^[A-Za-z\s]+$/;
-        if(!regex.test(val)) { $("#"+id).addClass("invalid").removeClass("valid"); return false; }
-        else { $("#"+id).removeClass("invalid").addClass("valid"); return true; }
+        const errorEl = $("#"+id).siblings(".error-msg");
+        if(!regex.test(val)) { $("#"+id).addClass("invalid").removeClass("valid"); errorEl.show(); return false; }
+        else { $("#"+id).removeClass("invalid").addClass("valid"); errorEl.hide(); return true; }
     }
     function validateEmail(){ 
         const val=$("#email").val().trim(); 
         const regex=/^\S+@\S+\.\S+$/; 
-        return regex.test(val) ? ($("#email").removeClass("invalid").addClass("valid"), true) : ($("#email").addClass("invalid").removeClass("valid"), false);
+        const errorEl = $("#email").siblings(".error-msg");
+        if(regex.test(val)){ $("#email").removeClass("invalid").addClass("valid"); errorEl.hide(); return true; }
+        else { $("#email").addClass("invalid").removeClass("valid"); errorEl.show(); return false; }
     }
     function validateMobile(){ 
         const val=$("#mobile").val().trim(); 
-        return /^\d{10}$/.test(val) ? ($("#mobile").removeClass("invalid").addClass("valid"), true) : ($("#mobile").addClass("invalid").removeClass("valid"), false);
+        const errorEl = $("#mobile").siblings(".error-msg");
+        if(/^\d{10}$/.test(val)){ $("#mobile").removeClass("invalid").addClass("valid"); errorEl.hide(); return true; }
+        else { $("#mobile").addClass("invalid").removeClass("valid"); errorEl.show(); return false; }
     }
     function validateMarks(id){
         const val=parseFloat($("#"+id).val());
-        if(isNaN(val) || val<40 || val>100){ $("#"+id).addClass("invalid").removeClass("valid"); return false; }
-        else { $("#"+id).removeClass("invalid").addClass("valid"); return true; }
+        const errorEl = $("#"+id).siblings(".error-msg");
+        if(isNaN(val) || val<40 || val>100){ $("#"+id).addClass("invalid").removeClass("valid"); errorEl.show(); return false; }
+        else { $("#"+id).removeClass("invalid").addClass("valid"); errorEl.hide(); return true; }
     }
+
+    // File size validation
+    $("#photo").change(function(){
+        const file = this.files[0];
+        const errorEl = $(this).siblings(".error-msg");
+        if(file){
+            if(file.size > 2*1024*1024){ // 2MB
+                $(this).addClass("invalid").removeClass("valid");
+                errorEl.show();
+            } else {
+                $(this).removeClass("invalid").addClass("valid");
+                errorEl.hide();
+            }
+        } else {
+            $(this).removeClass("valid").addClass("invalid");
+            errorEl.show();
+        }
+        toggleSubmit();
+    });
+
+    // DOB constraint: 16-30 years
+    const today = new Date();
+    const minYear = today.getFullYear() - 30; // max age
+    const maxYear = today.getFullYear() - 16; // min age
+    const minDate = new Date(minYear, today.getMonth(), today.getDate());
+    const maxDate = new Date(maxYear, today.getMonth(), today.getDate());
+    const formatDate = (d) => d.toISOString().split("T")[0];
+    $("#dob").attr("min", formatDate(minDate));
+    $("#dob").attr("max", formatDate(maxDate));
+
+    $("#dob").blur(function(){
+        const dobVal = $(this).val();
+        const errorEl = $(this).siblings(".error-msg");
+        if(!dobVal){
+            $(this).addClass("invalid").removeClass("valid");
+            errorEl.text("This field is required").show();
+        } else {
+            const dobDate = new Date(dobVal);
+            if(dobDate < minDate || dobDate > maxDate){
+                $(this).addClass("invalid").removeClass("valid");
+                errorEl.text("Age must be between 16 and 30 years").show();
+            } else {
+                $(this).removeClass("invalid").addClass("valid");
+                errorEl.hide();
+            }
+        }
+        toggleSubmit();
+    });
 
     $("#studentName, #fatherName, #motherName").blur(function(){ validateText(this.id); toggleSubmit(); });
     $("#email").blur(function(){ validateEmail(); toggleSubmit(); });
     $("#mobile").blur(function(){ validateMobile(); toggleSubmit(); });
     $("#tenthMark, #twelfthMark").blur(function(){ validateMarks(this.id); toggleSubmit(); });
 
+    // Call toggleSubmit on change for select fields
+    $("#gender, #department, #courseType, #board, #roomType").change(toggleSubmit);
+
     // Enable submit button if all required fields are valid
     function toggleSubmit(){
-        let valid=true;
-        $("#admissionForm [required]").each(function(){
-            if($(this).hasClass("invalid") || !$(this).val()) valid=false;
+        let valid = true;
+
+        $("#admissionForm input[required]").each(function(){
+            if($(this).hasClass("invalid") || !$(this).val()) valid = false;
         });
-        if(!$("#gender").val()) valid=false;
-        if(!$("input[name='hostel']:checked, .hostel-card.selected").length) valid=false;
+        $("#admissionForm select[required]").each(function(){
+            if($(this).hasClass("invalid") || !$(this).val()) valid = false;
+        });
+        if(!$(".hostel-card.selected").length) valid = false;
+        if($("#roomPreference").is(":visible") && !$("#roomType").val()) valid = false;
+
         $("#submitBtn").prop("disabled", !valid);
     }
 
+    // Form submit
     $("#admissionForm").submit(function(e){
         e.preventDefault();
-        alert("Form submitted successfully!");
+        // Reset form
         $(this)[0].reset();
         $("input, select").removeClass("valid invalid");
         $("#roomPreference").hide();
         $(".hostel-card").removeClass("selected");
         $("#submitBtn").prop("disabled", true);
+        // Show toast
+        showToast("Form submitted successfully!");
     });
+
+    // Toast function
+    function showToast(msg){
+        const x = $("#toast");
+        x.text(msg);
+        x.addClass("show");
+        setTimeout(()=>{ x.removeClass("show"); }, 3000);
+    }
 });
 </script>
 </body>
 </html>
+
+
 
 
 

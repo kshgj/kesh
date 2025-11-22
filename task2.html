@@ -8,242 +8,87 @@
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- QR Code -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-<!-- jsPDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-
 <!-- Icons -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <style>
-
-/* ===========================
-   GOVERNMENT HEADER STYLE
-   =========================== */
 body {
     margin: 0;
     font-family: "Inter", Arial, sans-serif;
     background: #f3f0ff;
     transition: background 0.3s, color 0.3s;
 }
-
-.dark {
-    background: #0f0f17;
-    color: white;
-}
-
-.gov-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #4B2FBF;
-    padding: 18px 25px;
-    color: white;
-}
-
-.gov-header-left {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-}
-
-.gov-emblem {
-    width: 60px;
-}
-
-.gov-title h1 {
-    margin: 0;
-    font-size: 22px;
-    font-weight: 700;
-}
-
-.gov-title p {
-    margin: 0;
-    font-size: 13px;
-    opacity: 0.9;
-}
-
-.theme-btn {
-    background: white;
-    border: none;
-    border-radius: 50%;
-    padding: 8px;
-    cursor: pointer;
-}
-
-
-
-/* ===========================
-   PROGRESS STEPS
-   =========================== */
-.progress-container {
-    display: flex;
-    justify-content: center;
-    margin: 25px 0;
-    gap: 22px;
-}
-
-.step {
-    width: 35px;
-    height: 35px;
-    background: #dcd6ff;
-    color: #4b2fbf;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.step.active {
-    background: #4b2fbf;
-    color: white;
-}
-
-
-
-/* ===========================
-   FORM LAYOUT
-   =========================== */
-.form-container {
-    width: 92%;
-    max-width: 680px;
-    margin: auto;
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
-}
-
-.dark .form-container {
-    background: #1b1b27;
-}
-
-
-
-/* ===========================
-   FIELD STYLES
-   =========================== */
-.form-step {
-    display: none;
-    animation: fade 0.4s;
-}
-
-.form-step.active {
-    display: block;
-}
-
-@keyframes fade {
-    from {opacity:0;}
-    to {opacity:1;}
-}
-
-.form-group {
-    margin-bottom: 22px;
-}
-
-label {
-    font-weight: 600;
-}
-
+.dark { background: #0f0f17; color: white; }
+.gov-header { display: flex; justify-content: space-between; align-items: center; background: #4B2FBF; padding: 18px 25px; color: white;}
+.gov-header-left { display: flex; gap: 15px; align-items: center;}
+.gov-emblem { width: 60px;}
+.gov-title h1 { margin: 0; font-size: 22px; font-weight: 700;}
+.gov-title p { margin: 0; font-size: 13px; opacity: 0.9;}
+.theme-btn { background: white; border: none; border-radius: 50%; padding: 8px; cursor: pointer; }
+.progress-container { display: flex; justify-content: center; margin: 25px 0; gap: 22px;}
+.step { width: 35px; height: 35px; background: #dcd6ff; color: #4b2fbf; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; transition: 0.3s;}
+.step.active { background: #4b2fbf; color: white;}
+.form-container { width: 92%; max-width: 680px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.15);}
+.dark .form-container { background: #1b1b27;}
+.form-step { display: none; animation: fade 0.4s;}
+.form-step.active { display: block;}
+@keyframes fade { from {opacity:0;} to {opacity:1;} }
+.form-group { margin-bottom: 22px;}
+label { font-weight: 600;}
 input, select {
-    width: 100%;
-    padding: 10px;
-    border: 2px solid #d0ccff;
-    border-radius: 8px;
-    outline: none;
-    margin-top: 6px;
-    font-size: 15px;
-    transition: 0.3s;
+    width: 100%; padding: 10px; border: 2px solid #d0ccff; border-radius: 8px;
+    outline: none; margin-top: 6px; font-size: 15px; transition: 0.3s;
 }
-
-input:focus, select:focus {
-    border-color: #4b2fbf;
-}
-
-input.invalid, select.invalid {
-    border-color: red !important;
-}
-
-small.error {
-    color: red;
-    font-size: 12px;
-}
-
-
-
-/* ===========================
-   BUTTONS
-   =========================== */
-.form-btns {
-    display: flex;
-    justify-content: space-between;
-}
-
+input:focus, select:focus { border-color: #4b2fbf; }
+input.invalid, select.invalid { border-color: red !important; }
+input.valid, select.valid { border-color: green !important; }
+small.error { color: red; font-size: 12px; }
+.form-btns { display: flex; justify-content: space-between; }
 .next-btn, .back-btn, .submit-btn {
-    padding: 12px 28px;
-    border: none;
-    background: #4B2FBF;
+    padding: 12px 28px; border: none; background: #4B2FBF; color: white;
+    border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s;
+}
+.next-btn:disabled { background: #999; cursor: not-allowed; }
+.back-btn { background: #777; }
+.next-btn:hover:not(:disabled), .submit-btn:hover { background: #351fa0; }
+.gov-footer { margin-top: 30px; padding: 20px; text-align: center; background: #4b2fbf; color: white; }
+
+/* Toast */
+#toast {
+    visibility: hidden;
+    min-width: 280px;
+    margin-left: -140px;
+    background-color: #4BB543;
     color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.2s;
-}
-
-.back-btn {
-    background: #777;
-}
-
-.next-btn:hover, .submit-btn:hover {
-    background: #351fa0;
-}
-
-
-
-/* ===========================
-   FOOTER
-   =========================== */
-.gov-footer {
-    margin-top: 30px;
-    padding: 20px;
     text-align: center;
-    background: #4b2fbf;
-    color: white;
+    border-radius: 8px;
+    padding: 16px;
+    position: fixed;
+    z-index: 9999;
+    left: 50%;
+    bottom: 30px;
+    font-size: 16px;
 }
+#toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+@keyframes fadein { from {bottom:0; opacity:0;} to {bottom:30px; opacity:1;} }
+@keyframes fadeout { from {bottom:30px; opacity:1;} to {bottom:0; opacity:0;} }
 </style>
 </head>
 <body>
 
-
-<!-- ===========================
-     HEADER
-=========================== -->
 <header class="gov-header">
     <div class="gov-header-left">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Emblem_of_India.svg/1200px-Emblem_of_India.svg.png"
-             class="gov-emblem">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Emblem_of_India.svg/1200px-Emblem_of_India.svg.png" class="gov-emblem">
         <div class="gov-title">
             <h1>Central Pollution Control Board</h1>
             <p>Ministry of Environment, Forest and Climate Change<br>Government of India</p>
         </div>
     </div>
-
     <button id="toggle-theme" class="theme-btn">
         <span class="material-icons">brightness_6</span>
     </button>
 </header>
 
-
-
-
-
-<!-- ===========================
-     PROGRESS
-=========================== -->
 <div class="progress-container">
     <div class="step active">1</div>
     <div class="step">2</div>
@@ -251,52 +96,38 @@ small.error {
     <div class="step">4</div>
 </div>
 
-
-
-
-
-<!-- ===========================
-     FORM
-=========================== -->
 <div class="form-container">
 <form id="emissionForm">
 
-<!---------------- STEP 1 ---------------->
+<!-- STEP 1 -->
 <div class="form-step active" id="step-1">
     <h2>Vehicle & Owner Information</h2>
-
     <div class="form-group">
         <label>Vehicle Owner Name *</label>
-        <input type="text" id="ownerName">
+        <input type="text" id="ownerName" required>
         <small class="error"></small>
     </div>
-
     <div class="form-group">
         <label>Vehicle Number *</label>
-        <input type="text" id="vehicleNumber" placeholder="Format: MH12AB1234">
+        <input type="text" id="vehicleNumber" placeholder="Format: MH12AB1234" required>
         <small class="error"></small>
     </div>
-
     <div class="form-group">
         <label>Registration Date *</label>
-        <input type="date" id="regDate">
+        <input type="date" id="regDate" required>
         <small class="error"></small>
     </div>
-
     <div class="form-btns">
-        <button type="button" class="next-btn">Next</button>
+        <button type="button" class="next-btn" disabled>Next</button>
     </div>
 </div>
 
-
-
-<!---------------- STEP 2 ---------------->
+<!-- STEP 2 -->
 <div class="form-step" id="step-2">
     <h2>Vehicle Specifications</h2>
-
     <div class="form-group">
         <label>Fuel Type *</label>
-        <select id="fuelType">
+        <select id="fuelType" required>
             <option value="">Select</option>
             <option>Petrol</option>
             <option>Diesel</option>
@@ -304,10 +135,9 @@ small.error {
         </select>
         <small class="error"></small>
     </div>
-
     <div class="form-group">
         <label>Vehicle Type *</label>
-        <select id="vehicleType">
+        <select id="vehicleType" required>
             <option value="">Select</option>
             <option>2W</option>
             <option>4W</option>
@@ -315,85 +145,70 @@ small.error {
         </select>
         <small class="error"></small>
     </div>
-
     <div class="form-group">
         <label>Manufacturing Year *</label>
-        <input type="number" id="manuYear" placeholder="e.g., 2018">
+        <input type="number" id="manuYear" placeholder="e.g., 2018" required>
         <small class="error"></small>
     </div>
-
     <div class="form-group" id="manuMonthBox" style="display:none;">
         <label>Manufacturing Month</label>
         <input type="month" id="manuMonth">
     </div>
-
     <div class="form-btns">
         <button type="button" class="back-btn">Back</button>
-        <button type="button" class="next-btn">Next</button>
+        <button type="button" class="next-btn" disabled>Next</button>
     </div>
 </div>
 
-
-
-<!---------------- STEP 3 ---------------->
+<!-- STEP 3 -->
 <div class="form-step" id="step-3">
     <h2>Emission Test Details</h2>
-
     <div class="form-group">
         <label>Last Test Date *</label>
-        <input type="date" id="lastTestDate">
+        <input type="date" id="lastTestDate" required>
         <small class="error"></small>
     </div>
-
     <div class="form-group">
         <label>Test Result *</label>
-        <select id="testResult">
+        <select id="testResult" required>
             <option value="">Select</option>
             <option>Pass</option>
             <option>Fail</option>
         </select>
         <small class="error"></small>
     </div>
-
     <div class="form-group" id="retestDateBox" style="display:none;">
-        <label>Re-Test Date</label>
+        <label>Re-Test Date *</label>
         <input type="date" id="retestDate">
         <small class="error"></small>
     </div>
-
     <div class="form-group">
         <label>Upload Last PUC Certificate *</label>
-        <input type="file" id="pucFile" accept=".pdf,.jpg,.jpeg">
+        <input type="file" id="pucFile" accept=".pdf,.jpg,.jpeg" required>
         <small class="error"></small>
     </div>
-
     <div class="form-btns">
         <button type="button" class="back-btn">Back</button>
-        <button type="button" class="next-btn">Next</button>
+        <button type="button" class="next-btn" disabled>Next</button>
     </div>
 </div>
 
-
-
-<!---------------- STEP 4 ---------------->
+<!-- STEP 4 -->
 <div class="form-step" id="step-4">
     <h2>Contact & Verification</h2>
-
     <div class="form-group">
         <label>Mobile Number *</label>
-        <input id="mobile" maxlength="10">
+        <input id="mobile" maxlength="10" required>
         <small class="error"></small>
     </div>
-
     <div class="form-group">
         <label>Email *</label>
-        <input id="email">
+        <input id="email" required>
         <small class="error"></small>
     </div>
-
     <div class="form-group">
         <label>State *</label>
-        <select id="state">
+        <select id="state" required>
             <option value="">Select</option>
             <option>Maharashtra</option>
             <option>Delhi</option>
@@ -403,10 +218,9 @@ small.error {
         </select>
         <small class="error"></small>
     </div>
-
     <div class="form-group">
         <label>Test Center *</label>
-        <select id="testCenter">
+        <select id="testCenter" required>
             <option value="">Select</option>
             <option value="CPC3001">CPC Center 3001 – Pune</option>
             <option value="CPC8811">CPC Center 8811 – Delhi</option>
@@ -414,215 +228,119 @@ small.error {
         </select>
         <small class="error"></small>
     </div>
-
     <div class="form-group">
         <label>Pollution Officer Name</label>
         <input id="officerName" readonly>
     </div>
-
-    <button type="submit" class="submit-btn">Submit</button>
+    <button type="submit" class="submit-btn" disabled>Submit</button>
 </div>
 
 </form>
 </div>
 
-
-
-
-
-<!-- ===========================
-     FOOTER
-=========================== -->
 <footer class="gov-footer">
     © 2025 | Central Pollution Control Board (CPCB) | Government of India
 </footer>
 
+<div id="toast">✅ Registration Completed Successfully!</div>
 
-
-
-
-<!-- ===========================
-     JAVASCRIPT LOGIC
-=========================== -->
 <script>
-
 let currentStep = 0;
 let steps = $(".form-step");
 let bullets = $(".step");
 
-/* -------------------------
-   STEP NAVIGATION
--------------------------- */
 function showStep(i){
     steps.removeClass("active");
     steps.eq(i).addClass("active");
-
     bullets.removeClass("active");
     bullets.eq(i).addClass("active");
-
     currentStep = i;
+    toggleNextButton(currentStep);
 }
 
-$(".next-btn").click(function(){
-    if(validateStep(currentStep)){
-        showStep(currentStep+1);
+function validateField(field){
+    let value = field.val().trim();
+    let error = field.siblings("small.error");
+    field.removeClass("invalid valid");
+    error.text("");
+
+    if(field.prop("required") && value===""){
+        error.text("This field is mandatory.");
+        field.addClass("invalid"); return false;
     }
-});
+    if(field.attr("id")==="ownerName" && value!==""){
+        if(!/^[A-Za-z ]+$/.test(value)){ field.addClass("invalid"); error.text("Name should contain alphabets only."); return false; }
+    }
+    if(field.attr("id")==="vehicleNumber" && value!==""){
+        if(!/^[A-Z]{2}\d{2}[A-Z]{2}\d{4}$/.test(value)){ field.addClass("invalid"); error.text("Format must be MH12AB1234"); return false; }
+    }
+    if(field.attr("id")==="mobile" && value!==""){
+        if(!/^[6-9]\d{9}$/.test(value)){ field.addClass("invalid"); error.text("Invalid Indian mobile number."); return false; }
+    }
+    if(field.attr("id")==="email" && value!==""){
+        if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value)){ field.addClass("invalid"); error.text("Invalid email format."); return false; }
+    }
+    if(field.attr("id")==="pucFile" && field[0].files.length>0){
+        let f = field[0].files[0].name.toLowerCase();
+        if(!(f.endsWith(".pdf") || f.endsWith(".jpg") || f.endsWith(".jpeg"))){
+            field.addClass("invalid"); error.text("Only PDF/JPG allowed."); return false;
+        }
+    }
+    if(field.attr("id")==="retestDate" && $("#testResult").val()==="Fail" && value===""){
+        field.addClass("invalid"); error.text("Please select a re-test date."); return false;
+    }
 
-$(".back-btn").click(function(){
-    showStep(currentStep-1);
-});
+    field.addClass("valid"); return true;
+}
 
-
-
-/* -------------------------
-   STRICT VALIDATION
--------------------------- */
-function validateStep(step){
+function isStepValid(step){
     let valid = true;
-    let fields = steps.eq(step).find("input, select");
-
-    fields.each(function(){
-        let value = $(this).val().trim();
-        let error = $(this).siblings("small.error");
-
-        $(this).removeClass("invalid");
-        error.text("");
-
-        // Owner Name – alphabets only
-        if(this.id==="ownerName"){
-            if(!/^[A-Za-z ]+$/.test(value)){
-                error.text("Name should contain alphabets only.");
-                $(this).addClass("invalid");
-                valid=false;
-            }
-        }
-
-        // Vehicle number strict format
-        if(this.id==="vehicleNumber"){
-            if(!/^[A-Z]{2}\d{2}[A-Z]{2}\d{4}$/.test(value)){
-                error.text("Format must be MH12AB1234");
-                $(this).addClass("invalid");
-                valid = false;
-            }
-        }
-
-        // Required check
-        if($(this).prop("required") && value===""){
-            error.text("This field is mandatory.");
-            $(this).addClass("invalid");
-            valid = false;
-        }
-
-        // File validation
-        if(this.id==="pucFile" && this.files.length>0){
-            let f = this.files[0].name.toLowerCase();
-            if(!(f.endsWith(".pdf") || f.endsWith(".jpg") || f.endsWith(".jpeg"))){
-                error.text("Only PDF/JPG allowed.");
-                $(this).addClass("invalid");
-                valid = false;
-            }
-        }
+    steps.eq(step).find("input:visible, select:visible").each(function(){
+        if(!validateField($(this))) valid=false;
     });
-
     return valid;
 }
 
-
-
-/* -------------------------
-   MOBILE + EMAIL BLUR VALIDATION
--------------------------- */
-$("#mobile").blur(function(){
-    if(!/^[6-9]\d{9}$/.test(this.value)){
-        $(this).addClass("invalid");
-        $(this).siblings("small.error").text("Invalid Indian mobile number.");
-    }
-});
-
-$("#email").blur(function(){
-    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(this.value)){
-        $(this).addClass("invalid");
-        $(this).siblings("small.error").text("Invalid email format.");
-    }
-});
-
-
-
-/* -------------------------
-   FAIL → SHOW RETEST DATE
--------------------------- */
-$("#testResult").change(function(){
-    $("#retestDateBox").toggle(this.value==="Fail");
-});
-
-
-
-/* -------------------------
-   MANUFACTURING YEAR > 2000
--------------------------- */
-$("#manuYear").blur(function(){
-    $("#manuMonthBox").toggle(Number(this.value)>2000);
-});
-
-
-
-/* -------------------------
-   AUTO-FILL OFFICER NAME
--------------------------- */
-let officers = {
-    "CPC3001": "Officer P. Kulkarni",
-    "CPC8811": "Officer R. Sharma",
-    "CPC5529": "Officer D. Nambiar"
-};
-
-$("#testCenter").change(function(){
-    $("#officerName").val(officers[$(this).val()] || "");
-});
-
-
-
-/* -------------------------
-   DARK MODE TOGGLE
--------------------------- */
-$("#toggle-theme").click(function(){
-    $("body").toggleClass("dark");
-});
-
-
-
-/* -------------------------
-   FINAL SUBMISSION
--------------------------- */
-$("#emissionForm").submit(function(e){
-    e.preventDefault();
-
-    if(!validateStep(3)){
-        alert("Please correct highlighted errors.");
-        return;
-    }
-
-    generateCertificate();
-    alert("Registration Completed Successfully!");
-});
-
-
-
-/* -------------------------
-   QR CODE + PDF
--------------------------- */
-function generateCertificate(){
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF();
-
-    pdf.text("CPCB VEHICLE EMISSION CERTIFICATE", 20, 20);
-    pdf.text("Owner: "+$("#ownerName").val(), 20, 35);
-    pdf.text("Vehicle: "+$("#vehicleNumber").val(), 20, 45);
-
-    pdf.save("PUC_Certificate.pdf");
+function toggleNextButton(step){
+    let nextBtn = steps.eq(step).find(".next-btn");
+    let submitBtn = steps.eq(step).find(".submit-btn");
+    let valid = isStepValid(step);
+    if(nextBtn.length>0) nextBtn.prop("disabled", !valid);
+    if(submitBtn.length>0) submitBtn.prop("disabled", !valid);
 }
 
+// Live validation
+$(document).on("input change blur", "input, select", function(){ toggleNextButton(currentStep); });
+
+$("#testResult").change(function(){ $("#retestDateBox").toggle(this.value==="Fail"); toggleNextButton(currentStep); });
+$("#manuYear").blur(function(){ $("#manuMonthBox").toggle(Number(this.value) > 2000); toggleNextButton(currentStep); });
+
+let officers = { "CPC3001":"Officer P. Kulkarni", "CPC8811":"Officer R. Sharma", "CPC5529":"Officer D. Nambiar" };
+$("#testCenter").change(function(){ $("#officerName").val(officers[$(this).val()] || ""); toggleNextButton(currentStep); });
+
+$(".next-btn").click(function(){ if(isStepValid(currentStep)) showStep(currentStep+1); });
+$(".back-btn").click(function(){ showStep(currentStep-1); });
+
+$("#toggle-theme").click(function(){ $("body").toggleClass("dark"); });
+
+function showToast(msg){
+    let toast = $("#toast"); toast.text(msg).addClass("show");
+    setTimeout(()=>{ toast.removeClass("show"); },3000);
+}
+
+$("#emissionForm").submit(function(e){
+    e.preventDefault();
+    let allValid = true;
+    for(let i=0;i<steps.length;i++){
+        if(!isStepValid(i)){ showStep(i); allValid=false; break; }
+    }
+    if(allValid){
+        $(".form-container").hide();
+        showToast("✅ Registration Completed Successfully!");
+    }
+});
 </script>
+
 </body>
 </html>
 
