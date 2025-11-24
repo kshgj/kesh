@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Lead source information</title>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+
+body {margin:0;padding:0;background:white;font-family:'Inter',sans-serif;}
+.header {background:blue;padding:18px 40px;display:flex;align-items:center;gap:18px;color:white;box-shadow:rgba(0,0,0,0.18) 0px 4px 12px;}
+
+.container {max-width:1000px;margin:40px auto;background:white;padding:40px;border-radius:18px;
+    box-shadow:rgba(0,0,0,0.07) 0px 4px 20px;animation:fadeIn 0.5s ease;}
+
+h2 {text-align:center;color:blue;font-size:26px;font-weight:700;margin-bottom:28px;}
+.section-title {margin:20px 0 10px;padding-bottom:6px;font-weight:600;font-size:17px;
+    border-bottom:2px solid grey;color:blue;}
+.form-group {margin-bottom:18px;}
+label {font-weight:550;display:block;margin-bottom:6px;font-size:15px;}
+
+
+input, select {
+    padding: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: 0.23s ease;
+    background: lightgrey;
+}
+input:focus, select:focus {outline:none;border-color:white;background:white;
+    box-shadow:0 0 0 4px rgba(0,109,209,0.15);}
+.highlight {background:lightblue !important;}
+.error {color:red;font-size:13px;margin-top:4px;display:block;}
+#hints {background:lightblue;padding:12px;margin-bottom:20px;border-left:4px solid white;border-radius:6px;
+    display:none;font-size:14%;}
+
+.form-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px 40px;
+}
+.full-width { grid-column: span 2; }
+
+
+</style>
+<script src="format.js"></script>
+
+</head>
+<body>
+
+
+<div class="header">
+<img src="">
+<div class="header-title">
+<h1></h1>
+<span></span>
+</div>
+</div>
+
+
+<div class="container">
+
+<h2>Lead Basic Information</h2>
+<div id=""></div>
+
+<form id="Information">
+
+<div class="form-grid">
+
+
+<div class="section-title full-width">Basic Information</div>
+
+<div class="form-group">
+<label>Lead Name*</label>
+<input type="text" id="leadName" class="val-username" data-hint="Enter your legal full name.">
+<span class="error" id="fullNameErr"></span>
+</div>
+<div class="form-group">
+<label>Company Name*</label>
+<input type="text" id="companyName" class="val-usernam" data-hint="Enter your legal full name.">
+<span class="error" id="fullNameErr"></span>
+</div>
+
+
+
+<div class="form-group">
+<label>Email*</label>
+<input type="text" id="email" class="val-email" data-hint="Enter email address. No numbers allowed after @.">
+<span class="error" id="emailErr"></span>
+</div>
+
+<div class="form-group">
+<label>Alternate Email</label>
+<input type="text" id="email" class="val-emai" data-hint="Enter email address. No numbers allowed after @.">
+<span class="error" id="emailErr"></span>
+</div>
+
+<div class="form-group">
+<label>Phone Number*</label>
+<input type="text" id="phone" class="val-mobile" data-hint="Enter valid 10-digit mobile number.">
+<span class="error" id="mobileErr"></span>
+</div>
+
+<div class="form-group">
+<label>Alternative phone Number</label>
+<input type="text" id="phone" class="val-mobil" data-hint="Enter valid 10-digit mobile number.">
+<span class="error" id="mobileErr"></span>
+</div>
+
+
+<div class="form-group">
+<label>Lead source*</label>
+<input type="text" id="leadSource" class="val-us" data-hint="Enter leadSource">
+<span class="error" id="leadErr"></span>
+</div>
+
+<div class="section-title full-width">Address Information</div>
+
+<div class="form-group">
+<label>Country*</label>
+<select id ="countryName" class="field">
+<option value="">Select</option>
+<option>India</option>
+</select>
+<span class="error" id="countryNameErr"></span>
+</div>
+
+<div class="form-group">
+<label>State</label>
+<select id="companyName" class="field">
+<option value="">Select</option>
+<option>Maharashtra</option>
+<option>Karnataka</option>
+<option>Delhi</option>
+<option>Tamil Nadu</option>
+<option>Uttar Pradesh</option>
+</select>
+<span class="error" id="compNameErr"></span>
+</div>
+
+<div class="form-group">
+<label>City*</label>
+<input type="text" id="email" class="val-userna" data-hint="Enter city">
+<span class="error" id="emailErr"></span>
+</div>
+
+<div class="form-group">
+<label>Pincode*</label>
+<input type="text" id="email" class="val-pincode" data-hint="Enter correct pincode.">
+<span class="error" id="emailErr"></span>
+</div>
+
+<div class="form-group">
+<label>Full address*</label>
+<input type="text" id="phone" class="val-address" data-hint="Enter valid address.">
+<span class="error" id="mobileErr"></span>
+</div>
+
+
+<div class="section-title full-width">Lead Qualification Details</div>
+
+<div class="form-group">
+<label>Lead stage*</label>
+<select id="leadStage" class="field">
+<option value="">Select</option>
+<option>New</option>
+<option>Contacted</option>
+<option>Interested</option>
+<option>Qualified</option>
+<option>Proposal Sent</option>
+<option>Negotiation</option>
+<option>Converted</option>
+<option>Lost</option>
+</select>
+<span class="error" id="countryNameErr"></span>
+</div>
+
+<div class="form-group">
+<label>Lead score*</label>
+<input type="text" id="companyName" class="field" data-hint="Enter your legal company name.">
+<span class="error" id="compNameErr"></span>
+</div>
+
+<div class="form-group">
+<label>Industry type*</label>
+<select id ="industryType" class="field">
+<option value="">Select</option>
+<option>IT</option>
+<option>Retail</option>
+<option>Manufacturing</option>
+<option>Logistics</option>
+<option>Education</option>
+<option>Finance</option>
+</select>
+<span class="error" id="IndErr"></span>
+</div>
+
+<div class="form-group">
+<label>Expected Revenue*</label>
+<input type="text" id="revenue" class="val-otp" data-hint="Enter revenue.">
+<span class="error" id="RevenueErr"></span>
+</div>
+
+<div class="form-group">
+<label>Budget Range*</label>
+<input type="text" id="budget" class="val-ot" data-hint="Enter valid number.">
+<span class="error" id="budgetErr"></span>
+</div>
+
+<div class="full-width">
+<button type="submit">Submit Registration</button>
+</div>
